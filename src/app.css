@@ -1,0 +1,226 @@
+:root {
+	--bg: #f6f7f9;
+	--surface: #ffffff;
+	--text: #1c2330;
+	--muted: #5d6778;
+	--border: #dde1e8;
+	--primary: #2557d6;
+	--primary-text: #ffffff;
+	--limpio: #1f8a4c;
+	--limpio-bg: #e3f5ea;
+	--medio: #a86400;
+	--medio-bg: #fff1d6;
+	--sucio: #c0362c;
+	--sucio-bg: #fde6e4;
+	--radius: 10px;
+	font-family:
+		system-ui,
+		-apple-system,
+		'Segoe UI',
+		Roboto,
+		sans-serif;
+	color: var(--text);
+	background: var(--bg);
+	line-height: 1.45;
+}
+
+* {
+	box-sizing: border-box;
+}
+
+body {
+	margin: 0;
+}
+
+main {
+	max-width: 64rem;
+	margin: 0 auto;
+	padding: 1rem;
+}
+
+h1 {
+	font-size: 1.4rem;
+	margin: 0 0 0.75rem;
+}
+
+h2 {
+	font-size: 1.1rem;
+	margin: 1.5rem 0 0.5rem;
+}
+
+a {
+	color: var(--primary);
+}
+
+.muted {
+	color: var(--muted);
+}
+
+.card {
+	background: var(--surface);
+	border: 1px solid var(--border);
+	border-radius: var(--radius);
+	padding: 1rem;
+}
+
+form {
+	display: grid;
+	gap: 0.85rem;
+}
+
+label {
+	display: grid;
+	gap: 0.3rem;
+	font-weight: 500;
+}
+
+input,
+select,
+textarea,
+button {
+	font: inherit;
+}
+
+input:not([type='radio']):not([type='file']),
+select,
+textarea {
+	width: 100%;
+	padding: 0.6rem 0.7rem;
+	border: 1px solid var(--border);
+	border-radius: 8px;
+	background: #fff;
+}
+
+button {
+	cursor: pointer;
+	border-radius: 8px;
+	border: 1px solid var(--border);
+	padding: 0.6rem 1rem;
+	background: var(--surface);
+}
+
+button.primary {
+	background: var(--primary);
+	color: var(--primary-text);
+	border-color: var(--primary);
+	font-weight: 600;
+}
+
+button:disabled {
+	opacity: 0.6;
+	cursor: progress;
+}
+
+button.link {
+	border: none;
+	background: none;
+	color: var(--primary);
+	padding: 0;
+}
+
+.alert {
+	margin: 0;
+	padding: 0.6rem 0.8rem;
+	border-radius: 8px;
+}
+
+.alert.error {
+	background: var(--sucio-bg);
+	color: var(--sucio);
+}
+
+.alert.success {
+	background: var(--limpio-bg);
+	color: var(--limpio);
+}
+
+.alert.warning {
+	background: var(--medio-bg);
+	color: var(--medio);
+}
+
+.badge {
+	display: inline-block;
+	padding: 0.15rem 0.55rem;
+	border-radius: 999px;
+	font-size: 0.8rem;
+	font-weight: 600;
+	white-space: nowrap;
+}
+
+.badge.limpio {
+	background: var(--limpio-bg);
+	color: var(--limpio);
+}
+
+.badge.medio_limpio {
+	background: var(--medio-bg);
+	color: var(--medio);
+}
+
+.badge.sucio {
+	background: var(--sucio-bg);
+	color: var(--sucio);
+}
+
+.topbar {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 0.5rem 1rem;
+	padding: 0.75rem 1rem;
+	background: var(--surface);
+	border-bottom: 1px solid var(--border);
+}
+
+.topbar .brand {
+	font-weight: 700;
+	color: var(--text);
+	text-decoration: none;
+}
+
+.topbar nav {
+	display: flex;
+	gap: 0.85rem;
+	flex: 1;
+}
+
+.topbar nav a {
+	text-decoration: none;
+}
+
+.topbar nav a[aria-current='page'] {
+	font-weight: 700;
+	text-decoration: underline;
+}
+
+.topbar .logout {
+	display: flex;
+	align-items: center;
+	gap: 0.6rem;
+}
+
+.table-wrap {
+	overflow-x: auto;
+}
+
+table {
+	width: 100%;
+	border-collapse: collapse;
+	background: var(--surface);
+}
+
+th,
+td {
+	text-align: left;
+	padding: 0.5rem 0.6rem;
+	border-bottom: 1px solid var(--border);
+	vertical-align: top;
+	font-size: 0.92rem;
+}
+
+@media (max-width: 30rem) {
+	.topbar .user {
+		display: none;
+	}
+}
