@@ -2,7 +2,8 @@
 	import { Monitor, Moon, Sun } from '@lucide/svelte';
 	import { onMount } from 'svelte';
 	import { ICON_SIZE } from './icon-size.ts';
-	import { setTheme, syncTheme, theme, THEME_LABEL, type Theme } from './theme.svelte.ts';
+	import { m } from '#lib/paraglide/messages.js';
+	import { setTheme, syncTheme, theme, themeLabel, type Theme } from './theme.svelte.ts';
 
 	const NEXT: Record<Theme, Theme> = { system: 'light', light: 'dark', dark: 'system' };
 	const ICON = { system: Monitor, light: Sun, dark: Moon };
@@ -14,8 +15,8 @@
 <button
 	type="button"
 	class="toggle"
-	aria-label="Cambiar tema (actual: {THEME_LABEL[theme.current]})"
-	title="Tema: {THEME_LABEL[theme.current]}"
+	aria-label={m.theme_toggle_aria({ current: themeLabel(theme.current) })}
+	title={m.theme_toggle_title({ current: themeLabel(theme.current) })}
 	onclick={() => setTheme(NEXT[theme.current])}
 >
 	<Icon size={ICON_SIZE.md} aria-hidden="true" />

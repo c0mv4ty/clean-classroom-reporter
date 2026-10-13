@@ -1,4 +1,5 @@
 import { error } from '@sveltejs/kit';
+import { m } from '#lib/paraglide/messages.js';
 import { assertAdmin } from '#lib/server/guards.ts';
 import type { PageServerLoad } from './$types';
 
@@ -29,7 +30,7 @@ export const load: PageServerLoad = async ({ locals, url }) => {
 		locals.supabase.from('aulas').select('id, nombre').order('id')
 	]);
 
-	if (reportesResult.error || aulasResult.error) error(500, 'No se pudo cargar el historial.');
+	if (reportesResult.error || aulasResult.error) error(500, m.admin_load_error());
 
 	const reportes = reportesResult.data;
 	const paths = reportes.map((r) => r.foto_path).filter((p): p is string => !!p);

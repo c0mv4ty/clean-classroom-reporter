@@ -2,6 +2,7 @@
 	import AulaCard from '#lib/components/AulaCard.svelte';
 	import PageHeader from '#lib/components/PageHeader.svelte';
 	import StateSummary from '#lib/components/StateSummary.svelte';
+	import { m } from '#lib/paraglide/messages.js';
 	import { formatDateTime } from '#lib/format.ts';
 	import type { PageProps } from './$types';
 
@@ -17,24 +18,22 @@
 </script>
 
 <svelte:head>
-	<title>Aulas · ESPOCH Aulas limpias</title>
+	<title>{m.meta_title({ page: m.nav_classrooms() })}</title>
 </svelte:head>
 
 <PageHeader
-	title="Estado de las aulas"
+	title={m.home_heading()}
 	description={ultimaActualizacion
-		? `Última actualización: ${formatDateTime(ultimaActualizacion)}. Elige un aula para reportar su estado.`
-		: 'Elige un aula para reportar su estado.'}
+		? m.home_description_updated({ date: formatDateTime(ultimaActualizacion) })
+		: m.home_pick_hint()}
 />
 
 <StateSummary estados={data.aulas.map((a) => a.estado_actual)} />
 
 {#if data.aulas.length === 0}
-	<p class="empty muted">
-		No hay aulas registradas todavía. La administración debe cargarlas primero.
-	</p>
+	<p class="empty muted">{m.home_empty()}</p>
 {:else}
-	<ul class="grid" aria-label="Aulas">
+	<ul class="grid" aria-label={m.nav_classrooms()}>
 		{#each data.aulas as aula (aula.id)}
 			<li><AulaCard {aula} /></li>
 		{/each}

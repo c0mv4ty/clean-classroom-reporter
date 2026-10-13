@@ -69,6 +69,16 @@ npm run build   # production build for Cloudflare Pages
 `supabase/tests/` holds a plain-Postgres stub of the `auth`/`storage` schemas plus a scenario
 script that exercises the evidence rule, state sync and RLS without the Supabase CLI.
 
+## Internationalization
+
+The UI is available in Spanish (default) and English using [Paraglide JS](https://inlang.com/m/gerre34r/library-inlang-paraglideJs). The locale is stored in the `PARAGLIDE_LOCALE` cookie (falling back to the browser's preferred language, then Spanish), so URLs stay unprefixed.
+
+- Messages live in `messages/{locale}.json`. Keys are grouped by area (`nav_*`, `login_*`, `aula_*`, `admin_*`, `estado_*`). Use them with `import { m } from '#lib/paraglide/messages.js'` and `m.some_key({ param })`.
+- To add a message: add the same key to every `messages/*.json` file, then use it. The compiler runs with `npm run dev`, `npm run build` and `npm run check`; generated code goes to `src/lib/paraglide` (git-ignored).
+- To add a locale: add its code to `locales` in `project.inlang/settings.json`, create `messages/<code>.json`, and add it to the `NAME` map in `src/lib/components/LanguageSwitch.svelte` (plus a `language_<code>` message).
+- Server actions and loads call `m.*` directly; the request locale is applied by `paraglideMiddleware` in `src/hooks.server.ts`.
+- Dates use the active locale and the `America/Lima` time zone (`src/lib/format.ts`).
+
 ## 4. Deploy to Cloudflare Pages
 
 `wrangler.toml` sets `pages_build_output_dir = ".svelte-kit/cloudflare"` and the

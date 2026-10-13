@@ -1,10 +1,12 @@
 import { error, fail } from '@sveltejs/kit';
 import { isEstado, requiresPhoto } from '#lib/estados.ts';
+import { m } from '#lib/paraglide/messages.js';
 import type { Actions, PageServerLoad } from './$types';
 
 const MAX_NOTE_LENGTH = 500;
 const MAX_PHOTO_BYTES = 10 * 1024 * 1024;
 const RECENT_REPORTS = 10;
+const EVIDENCE_REQUIRED_HINT = 'evidencia_requerida';
 
 const EXTENSION_BY_TYPE: Record<string, string> = {
 	'image/jpeg': 'jpg',
@@ -16,7 +18,7 @@ const EXTENSION_BY_TYPE: Record<string, string> = {
 
 function parseAulaId(raw: string) {
 	const id = Number(raw);
-	if (!Number.isInteger(id) || id <= 0) error(404, 'Aula no encontrada.');
+	if (!Number.isInteger(id) || id <= 0) error(404, m.aula_not_found());
 	return id;
 }
 
@@ -37,8 +39,8 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 			.limit(RECENT_REPORTS)
 	]);
 
-	if (aulaResult.error || reportesResult.error) error(500, 'No se pudo cargar el aula.');
-	if (!aulaResult.data) error(404, 'Aula no encontrada.');
+	if (aulaResult.error || reportesResult.error) error(500, m.aula_load_error());
+	if (!aulaResult.data) error(404, m.aula_not_found());
 
 	return {
 		aula: aulaResult.data,
@@ -58,19 +60,22 @@ export const actions: Actions = {
 		const hasPhoto = foto instanceof File && foto.size > 0;
 
 		if (!isEstado(estado)) {
-			return fail(400, { nota, message: 'Selecciona el estado del aula.' });
+			return fail(400, { nota, message: m.report_error_estado_missing() });
 		}
 		if (nota.length > MAX_NOTE_LENGTH) {
 			return fail(400, {
 				nota,
-				message: `La nota no puede superar ${MAX_NOTE_LENGTH} caracteres.`
+				message: m.report_error_note_too_long({ max: MAX_NOTE_LENGTH })
 			});
 		}
 		if (hasPhoto && !EXTENSION_BY_TYPE[foto.type]) {
-			return fail(400, { nota, message: 'La foto debe ser JPG, PNG, WEBP o HEIC.' });
+			return fail(400, { nota, message: m.report_error_photo_type() });
 		}
 		if (hasPhoto && foto.size > MAX_PHOTO_BYTES) {
-			return fail(400, { nota, message: 'La foto no puede superar 10 MB.' });
+			return fail(400, {
+				nota,
+				message: m.report_error_photo_size({ max: MAX_PHOTO_BYTES / (1024 * 1024) })
+			});
 		}
 
 		// Early, friendly check. The DB trigger enforces the same rule authoritatively.
@@ -79,11 +84,11 @@ export const actions: Actions = {
 			.select('estado_actual')
 			.eq('id', aulaId)
 			.maybeSingle();
-		if (!aula) error(404, 'Aula no encontrada.');
+		if (!aula) error(404, m.aula_not_found());
 		if (requiresPhoto(aula.estado_actual, estado) && !hasPhoto) {
 			return fail(400, {
 				nota,
-				message: 'El aula estaba sucia: adjunta una foto como evidencia de la limpieza.'
+				message: m.report_error_evidence_required()
 			});
 		}
 
@@ -94,7 +99,7 @@ export const actions: Actions = {
 				.from('evidencias')
 				.upload(fotoPath, foto, { contentType: foto.type, upsert: false });
 			if (uploadError) {
-				return fail(500, { nota, message: 'No se pudo subir la foto. Intenta nuevamente.' });
+				return fail(500, { nota, message: m.report_error_upload() });
 			}
 		}
 
@@ -106,12 +111,13 @@ export const actions: Actions = {
 		});
 
 		if (insertError) {
-			// 23514 = check_violation raised by our trigger with a user-facing Spanish message.
+			// 23514 = check_violation raised by our trigger; its hint identifies the evidence rule,
+			// so the user-facing text is localized here instead of echoing the DB's Spanish message.
 			// An uploaded photo stays orphaned in Storage; only admins may delete objects.
 			const message =
-				insertError.code === '23514'
-					? insertError.message
-					: 'No se pudo guardar el reporte. Intenta nuevamente.';
+				insertError.code === '23514' && insertError.hint === EVIDENCE_REQUIRED_HINT
+					? m.report_error_evidence_required()
+					: m.report_error_save();
 			return fail(400, { nota, message });
 		}
 

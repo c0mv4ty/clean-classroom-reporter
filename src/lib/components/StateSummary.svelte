@@ -1,6 +1,7 @@
 <script lang="ts">
 	import EstadoIcon from './EstadoIcon.svelte';
-	import { ESTADO_LABEL, ESTADOS } from '#lib/estados.ts';
+	import { m } from '#lib/paraglide/messages.js';
+	import { estadoLabel, ESTADOS } from '#lib/estados.ts';
 	import type { EstadoAula } from '#lib/types/database.ts';
 
 	let { estados }: { estados: EstadoAula[] } = $props();
@@ -13,11 +14,11 @@
 	);
 </script>
 
-<ul class="summary" aria-label="Resumen por estado">
+<ul class="summary" aria-label={m.estado_summary_aria()}>
 	{#each resumen as r (r.estado)}
 		<li class="chip {r.estado}">
 			<span class="dot"><EstadoIcon estado={r.estado} size="md" /></span>
-			<span class="label">{ESTADO_LABEL[r.estado]}</span>
+			<span class="label">{estadoLabel(r.estado)}</span>
 			<strong class="count">{r.total}</strong>
 		</li>
 	{/each}

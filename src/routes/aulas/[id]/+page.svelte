@@ -10,6 +10,7 @@
 	import PhotoPicker from '#lib/components/PhotoPicker.svelte';
 	import { requiresPhoto } from '#lib/estados.ts';
 	import { formatDateTime } from '#lib/format.ts';
+	import { m } from '#lib/paraglide/messages.js';
 	import type { EstadoAula } from '#lib/types/database.ts';
 	import type { PageProps } from './$types';
 
@@ -26,16 +27,14 @@
 </script>
 
 <svelte:head>
-	<title>{data.aula.nombre} · ESPOCH Aulas limpias</title>
+	<title>{m.meta_title({ page: data.aula.nombre })}</title>
 </svelte:head>
 
-<a class="back" href="/"
-	><ChevronLeft size={ICON_SIZE.md} aria-hidden="true" /> Volver a las aulas</a
->
+<a class="back" href="/"><ChevronLeft size={ICON_SIZE.md} aria-hidden="true" /> {m.aula_back()}</a>
 
 <PageHeader
 	title={data.aula.nombre}
-	description="Última actualización: {formatDateTime(data.aula.actualizado_en)}"
+	description={m.aula_updated_at({ date: formatDateTime(data.aula.actualizado_en) })}
 >
 	{#snippet aside()}
 		<EstadoBadge estado={data.aula.estado_actual} />
@@ -43,7 +42,7 @@
 </PageHeader>
 
 <div class="layout">
-	<Card title="Nuevo reporte">
+	<Card title={m.aula_new_report()}>
 		<form
 			class="report-form"
 			method="POST"
@@ -60,22 +59,20 @@
 			<EstadoPicker name="estado" bind:value={estado} />
 
 			<label class="field">
-				<span class="field-label">Nota (opcional)</span>
+				<span class="field-label">{m.aula_note_label()}</span>
 				<textarea
 					class="input"
 					name="nota"
 					rows="3"
 					maxlength="500"
-					placeholder="Ej.: basurero lleno"
+					placeholder={m.aula_note_placeholder()}
 					value={form?.nota ?? ''}></textarea>
 			</label>
 
 			<PhotoPicker
 				name="foto"
-				label={fotoObligatoria ? 'Foto (obligatoria)' : 'Foto (opcional)'}
-				hint={fotoObligatoria
-					? 'Esta aula está marcada como sucia. Para reportarla como limpia o medio limpia adjunta una foto como evidencia.'
-					: undefined}
+				label={fotoObligatoria ? m.aula_photo_required_label() : m.aula_photo_optional_label()}
+				hint={fotoObligatoria ? m.aula_photo_hint_dirty() : undefined}
 				required={fotoRequerida}
 			/>
 
@@ -86,20 +83,21 @@
 				</p>
 			{:else if form?.success}
 				<p class="alert success" role="status">
-					<Check size={ICON_SIZE.sm} aria-hidden="true" /> Reporte guardado.
+					<Check size={ICON_SIZE.sm} aria-hidden="true" />
+					{m.aula_saved()}
 				</p>
 			{/if}
 
 			<Button type="submit" variant="primary" block disabled={submitting}>
-				{submitting ? 'Enviando…' : 'Enviar reporte'}
+				{submitting ? m.aula_submitting() : m.aula_submit()}
 			</Button>
 		</form>
 	</Card>
 
 	<section class="history" aria-labelledby="historial-titulo">
-		<h2 id="historial-titulo">Últimos reportes</h2>
+		<h2 id="historial-titulo">{m.aula_history_title()}</h2>
 		{#if data.reportes.length === 0}
-			<p class="muted">Aún no hay reportes para esta aula. El tuyo será el primero.</p>
+			<p class="muted">{m.aula_history_empty()}</p>
 		{:else}
 			<ol class="reportes">
 				{#each data.reportes as r (r.id)}
@@ -110,10 +108,10 @@
 						</div>
 						{#if r.nota}<p class="nota">{r.nota}</p>{/if}
 						<p class="meta">
-							{r.usuario_id === data.userId ? 'Reportado por ti' : 'Reportado por otro presidente'}
+							{r.usuario_id === data.userId ? m.aula_reported_by_you() : m.aula_reported_by_other()}
 							{#if r.foto_path}
 								<span class="with-photo"
-									><Camera size={ICON_SIZE.sm} aria-hidden="true" /> con foto</span
+									><Camera size={ICON_SIZE.sm} aria-hidden="true" /> {m.aula_with_photo()}</span
 								>
 							{/if}
 						</p>

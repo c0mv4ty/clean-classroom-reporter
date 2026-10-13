@@ -1,6 +1,6 @@
 <script lang="ts">
 	import EstadoIcon from './EstadoIcon.svelte';
-	import { ESTADO_LABEL } from '#lib/estados.ts';
+	import { estadoLabel } from '#lib/estados.ts';
 	import type { EstadoAula } from '#lib/types/database.ts';
 
 	let { estado }: { estado: EstadoAula } = $props();
@@ -8,7 +8,7 @@
 
 <span class="badge {estado}">
 	<EstadoIcon {estado} />
-	{ESTADO_LABEL[estado]}
+	{estadoLabel(estado)}
 </span>
 
 <style>

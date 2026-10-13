@@ -2,7 +2,8 @@
 	import { Monitor, Moon, Sun } from '@lucide/svelte';
 	import { onMount } from 'svelte';
 	import { ICON_SIZE } from './icon-size.ts';
-	import { setTheme, syncTheme, theme, THEME_LABEL, THEMES } from './theme.svelte.ts';
+	import { m } from '#lib/paraglide/messages.js';
+	import { setTheme, syncTheme, theme, themeLabel, THEMES } from './theme.svelte.ts';
 
 	const ICON = { system: Monitor, light: Sun, dark: Moon };
 	const name = $props.id();
@@ -11,7 +12,7 @@
 </script>
 
 <fieldset class="theme-select">
-	<legend class="legend">Tema</legend>
+	<legend class="legend">{m.theme_label()}</legend>
 	<div class="options">
 		{#each THEMES as option (option)}
 			{@const Icon = ICON[option]}
@@ -25,7 +26,7 @@
 					onchange={() => setTheme(option)}
 				/>
 				<Icon size={ICON_SIZE.sm} aria-hidden="true" />
-				{THEME_LABEL[option]}
+				{themeLabel(option)}
 			</label>
 		{/each}
 	</div>

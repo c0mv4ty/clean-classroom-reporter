@@ -10,12 +10,13 @@
 </script>
 
 <script lang="ts">
+	import { m } from '#lib/paraglide/messages.js';
 	import { ICON_SIZE } from './icon-size.ts';
 
 	let {
 		links,
 		variant,
-		label = 'Principal'
+		label = m.nav_main()
 	}: { links: NavLink[]; variant: 'bar' | 'menu'; label?: string } = $props();
 </script>
 

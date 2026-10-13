@@ -3,6 +3,7 @@
 	import { ICON_SIZE } from '#lib/components/icon-size.ts';
 	import { ChevronLeft, ChevronRight, ExternalLink } from '@lucide/svelte';
 	import PageHeader from '#lib/components/PageHeader.svelte';
+	import { m } from '#lib/paraglide/messages.js';
 	import { formatDateTime } from '#lib/format.ts';
 	import type { PageProps } from './$types';
 
@@ -18,71 +19,69 @@
 </script>
 
 <svelte:head>
-	<title>Historial · ESPOCH Aulas limpias</title>
+	<title>{m.meta_title({ page: m.nav_history() })}</title>
 </svelte:head>
 
 <PageHeader
-	title="Historial de reportes"
-	description="{data.total} {data.total === 1 ? 'reporte registrado' : 'reportes registrados'}"
+	title={m.admin_history_title()}
+	description={m.admin_history_count({ count: data.total })}
 >
 	{#snippet aside()}
 		<form method="GET" class="filtro">
 			<label class="field">
-				<span class="field-label">Filtrar por aula</span>
+				<span class="field-label">{m.admin_filter_label()}</span>
 				<select
 					class="input"
 					name="aula"
 					value={data.aulaId ?? ''}
 					onchange={(e) => e.currentTarget.form?.requestSubmit()}
 				>
-					<option value="">Todas las aulas</option>
+					<option value="">{m.admin_filter_all()}</option>
 					{#each data.aulas as aula (aula.id)}
 						<option value={aula.id}>{aula.nombre}</option>
 					{/each}
 				</select>
 			</label>
-			<noscript><button type="submit" class="btn">Filtrar</button></noscript>
+			<noscript><button type="submit" class="btn">{m.admin_filter_submit()}</button></noscript>
 		</form>
 	{/snippet}
 </PageHeader>
 
 {#if data.reportes.length === 0}
-	<p class="empty muted">
-		{data.aulaId
-			? 'Esta aula aún no tiene reportes.'
-			: 'Todavía no se ha registrado ningún reporte.'}
-	</p>
+	<p class="empty muted">{data.aulaId ? m.admin_empty_filtered() : m.admin_empty()}</p>
 {:else}
 	<div class="table-card">
 		<table class="rtable">
 			<thead>
 				<tr>
-					<th scope="col">Fecha</th>
-					<th scope="col">Aula</th>
-					<th scope="col">Estado</th>
-					<th scope="col">Nota</th>
-					<th scope="col">Presidente</th>
-					<th scope="col">Evidencia</th>
+					<th scope="col">{m.admin_col_date()}</th>
+					<th scope="col">{m.admin_col_classroom()}</th>
+					<th scope="col">{m.admin_col_status()}</th>
+					<th scope="col">{m.admin_col_note()}</th>
+					<th scope="col">{m.admin_col_president()}</th>
+					<th scope="col">{m.admin_col_evidence()}</th>
 				</tr>
 			</thead>
 			<tbody>
 				{#each data.reportes as r (r.id)}
 					<tr>
-						<td data-label="Fecha" class="nowrap">{formatDateTime(r.creado_en)}</td>
-						<td data-label="Aula"><strong>{r.aula?.nombre ?? '—'}</strong></td>
-						<td data-label="Estado"><span><EstadoBadge estado={r.estado} /></span></td>
-						<td data-label="Nota">{r.nota ?? '—'}</td>
-						<td data-label="Presidente">{r.usuario?.nombre ?? '—'}</td>
-						<td data-label="Evidencia">
+						<td data-label={m.admin_col_date()} class="nowrap">{formatDateTime(r.creado_en)}</td>
+						<td data-label={m.admin_col_classroom()}><strong>{r.aula?.nombre ?? '—'}</strong></td>
+						<td data-label={m.admin_col_status()}><span><EstadoBadge estado={r.estado} /></span></td
+						>
+						<td data-label={m.admin_col_note()}>{r.nota ?? '—'}</td>
+						<td data-label={m.admin_col_president()}>{r.usuario?.nombre ?? '—'}</td>
+						<td data-label={m.admin_col_evidence()}>
 							{#if r.fotoUrl}
 								<a class="foto" href={r.fotoUrl} target="_blank" rel="noopener noreferrer">
-									Ver foto <ExternalLink size={ICON_SIZE.sm} aria-hidden="true" />
-									<span class="visually-hidden">(se abre en otra pestaña)</span>
+									{m.admin_photo_view()}
+									<ExternalLink size={ICON_SIZE.sm} aria-hidden="true" />
+									<span class="visually-hidden">{m.admin_new_tab()}</span>
 								</a>
 							{:else if r.foto_path}
-								<span class="muted">No disponible</span>
+								<span class="muted">{m.admin_photo_unavailable()}</span>
 							{:else}
-								<span class="muted">Sin foto</span>
+								<span class="muted">{m.admin_photo_none()}</span>
 							{/if}
 						</td>
 					</tr>
@@ -92,16 +91,16 @@
 	</div>
 
 	{#if data.totalPages > 1}
-		<nav class="paginacion" aria-label="Paginación">
+		<nav class="paginacion" aria-label={m.admin_pagination_aria()}>
 			{#if data.page > 1}
 				<a class="btn" href={pageHref(data.page - 1)}
-					><ChevronLeft size={ICON_SIZE.sm} aria-hidden="true" /> Anterior</a
+					><ChevronLeft size={ICON_SIZE.sm} aria-hidden="true" /> {m.admin_prev()}</a
 				>
 			{/if}
-			<span class="muted">Página {data.page} de {data.totalPages}</span>
+			<span class="muted">{m.admin_page_of({ page: data.page, total: data.totalPages })}</span>
 			{#if data.page < data.totalPages}
 				<a class="btn" href={pageHref(data.page + 1)}
-					>Siguiente <ChevronRight size={ICON_SIZE.sm} aria-hidden="true" /></a
+					>{m.admin_next()} <ChevronRight size={ICON_SIZE.sm} aria-hidden="true" /></a
 				>
 			{/if}
 		</nav>

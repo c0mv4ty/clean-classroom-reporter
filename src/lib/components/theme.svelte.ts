@@ -1,13 +1,19 @@
 // Shared theme state for ThemeToggle and ThemeSelect.
 // Keep STORAGE_KEY in sync with the pre-paint script in src/app.html.
+import { m } from '#lib/paraglide/messages.js';
+
 export type Theme = 'system' | 'light' | 'dark';
 
 export const THEMES: readonly Theme[] = ['system', 'light', 'dark'];
-export const THEME_LABEL: Record<Theme, string> = {
-	system: 'Sistema',
-	light: 'Claro',
-	dark: 'Oscuro'
+const THEME_LABEL: Record<Theme, () => string> = {
+	system: m.theme_system,
+	light: m.theme_light,
+	dark: m.theme_dark
 };
+
+export function themeLabel(value: Theme) {
+	return THEME_LABEL[value]();
+}
 
 const STORAGE_KEY = 'theme';
 

@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { Camera, ImageIcon } from '@lucide/svelte';
+	import { m } from '#lib/paraglide/messages.js';
 	import { ICON_SIZE } from './icon-size.ts';
 
 	type Props = {
@@ -69,22 +70,22 @@
 		/>
 		<label class="btn trigger" for={inputId} id="{inputId}-action">
 			<Camera size={ICON_SIZE.md} aria-hidden="true" />
-			{fileName ? 'Cambiar foto' : 'Tomar o elegir foto'}
+			{fileName ? m.photo_change() : m.photo_choose()}
 		</label>
 
 		{#if fileName}
 			<div class="selected">
 				{#if previewUrl}
-					<img class="thumb" src={previewUrl} alt="Vista previa de la foto seleccionada" />
+					<img class="thumb" src={previewUrl} alt={m.photo_preview_alt()} />
 				{/if}
 				<div class="meta">
 					<span class="file-name">{fileName}</span>
-					<button type="button" class="remove" onclick={clear}>Quitar foto</button>
+					<button type="button" class="remove" onclick={clear}>{m.photo_remove()}</button>
 				</div>
 			</div>
 		{:else}
 			<span class="empty"
-				><ImageIcon size={ICON_SIZE.sm} aria-hidden="true" /> Ninguna foto seleccionada</span
+				><ImageIcon size={ICON_SIZE.sm} aria-hidden="true" /> {m.photo_none()}</span
 			>
 		{/if}
 	</div>

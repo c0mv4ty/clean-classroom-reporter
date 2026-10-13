@@ -2,6 +2,7 @@
 	import EstadoBadge from './EstadoBadge.svelte';
 	import { ChevronRight } from '@lucide/svelte';
 	import { ICON_SIZE } from './icon-size.ts';
+	import { m } from '#lib/paraglide/messages.js';
 	import { formatDateTime } from '#lib/format.ts';
 	import type { EstadoAula } from '#lib/types/database.ts';
 
@@ -23,8 +24,8 @@
 	<EstadoBadge estado={aula.estado_actual} />
 	<small class="updated">
 		{aula.actualizado_en
-			? `Actualizado ${formatDateTime(aula.actualizado_en)}`
-			: 'Sin reportes aún'}
+			? m.aula_card_updated({ date: formatDateTime(aula.actualizado_en) })
+			: m.aula_card_never()}
 	</small>
 </a>
 

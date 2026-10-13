@@ -1,13 +1,14 @@
 <script lang="ts">
 	import EstadoIcon from './EstadoIcon.svelte';
-	import { ESTADO_LABEL, ESTADOS } from '#lib/estados.ts';
+	import { m } from '#lib/paraglide/messages.js';
+	import { estadoLabel, ESTADOS } from '#lib/estados.ts';
 	import type { EstadoAula } from '#lib/types/database.ts';
 
 	let { name, value = $bindable(null) }: { name: string; value?: EstadoAula | null } = $props();
 </script>
 
 <fieldset class="picker">
-	<legend class="field-label">Estado del aula</legend>
+	<legend class="field-label">{m.estado_picker_legend()}</legend>
 	<div class="options">
 		{#each ESTADOS as opcion (opcion)}
 			<label class="option {opcion}">
@@ -20,7 +21,7 @@
 					required
 				/>
 				<span class="icon"><EstadoIcon estado={opcion} size="md" /></span>
-				<span class="text">{ESTADO_LABEL[opcion]}</span>
+				<span class="text">{estadoLabel(opcion)}</span>
 			</label>
 		{/each}
 	</div>

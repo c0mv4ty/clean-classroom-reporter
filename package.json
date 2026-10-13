@@ -15,6 +15,7 @@
 		"gen": "wrangler types"
 	},
 	"devDependencies": {
+		"@inlang/paraglide-js": "^2.18.2",
 		"@lucide/svelte": "^1.55.0",
 		"@sveltejs/adapter-cloudflare": "^8.0.0",
 		"@sveltejs/kit": "^3.0.0",

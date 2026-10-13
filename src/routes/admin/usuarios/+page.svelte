@@ -5,6 +5,8 @@
 	import { ICON_SIZE } from '#lib/components/icon-size.ts';
 	import { Check, TriangleAlert } from '@lucide/svelte';
 	import PageHeader from '#lib/components/PageHeader.svelte';
+	import { MIN_PASSWORD_LENGTH } from '#lib/constants.ts';
+	import { m } from '#lib/paraglide/messages.js';
 	import { formatDateTime } from '#lib/format.ts';
 	import type { PageProps } from './$types';
 
@@ -15,15 +17,15 @@
 </script>
 
 <svelte:head>
-	<title>Usuarios · ESPOCH Aulas limpias</title>
+	<title>{m.meta_title({ page: m.nav_users() })}</title>
 </svelte:head>
 
 <PageHeader
-	title="Usuarios"
-	description="{data.usuarios.length} usuarios, {presidentes} presidentes de curso"
+	title={m.nav_users()}
+	description={m.admin_users_summary({ total: data.usuarios.length, presidents: presidentes })}
 />
 
-<Card title="Crear usuario">
+<Card title={m.admin_users_create_title()}>
 	<form
 		class="create"
 		method="POST"
@@ -38,11 +40,11 @@
 	>
 		<div class="fields">
 			<label class="field">
-				<span class="field-label">Nombre</span>
+				<span class="field-label">{m.field_name()}</span>
 				<input class="input" name="nombre" required value={form?.nombre ?? ''} />
 			</label>
 			<label class="field">
-				<span class="field-label">Correo</span>
+				<span class="field-label">{m.field_email()}</span>
 				<input
 					class="input"
 					name="email"
@@ -53,22 +55,22 @@
 				/>
 			</label>
 			<label class="field">
-				<span class="field-label">Contraseña inicial</span>
+				<span class="field-label">{m.admin_users_password_initial()}</span>
 				<input
 					class="input"
 					name="password"
 					type="password"
-					minlength="8"
+					minlength={MIN_PASSWORD_LENGTH}
 					required
 					autocomplete="new-password"
 				/>
-				<span class="field-hint">Mínimo 8 caracteres.</span>
+				<span class="field-hint">{m.admin_users_password_hint({ min: MIN_PASSWORD_LENGTH })}</span>
 			</label>
 			<label class="field">
-				<span class="field-label">Rol</span>
+				<span class="field-label">{m.admin_users_role()}</span>
 				<select class="input" name="rol" value={form?.rol ?? 'presidente'}>
-					<option value="presidente">Presidente</option>
-					<option value="admin">Admin</option>
+					<option value="presidente">{m.admin_users_role_presidente()}</option>
+					<option value="admin">{m.admin_users_role_admin()}</option>
 				</select>
 			</label>
 		</div>
@@ -80,41 +82,44 @@
 			</p>
 		{:else if form?.created}
 			<p class="alert success" role="status">
-				<Check size={ICON_SIZE.sm} aria-hidden="true" /> Usuario {form.created} creado.
+				<Check size={ICON_SIZE.sm} aria-hidden="true" />
+				{m.admin_users_created({ email: form.created })}
 			</p>
 		{/if}
 
 		<div class="actions">
 			<Button type="submit" variant="primary" disabled={submitting}>
-				{submitting ? 'Creando…' : 'Crear usuario'}
+				{submitting ? m.admin_users_submitting() : m.admin_users_submit()}
 			</Button>
 		</div>
 	</form>
 </Card>
 
 <section class="listado" aria-labelledby="listado-titulo">
-	<h2 id="listado-titulo">Listado</h2>
+	<h2 id="listado-titulo">{m.admin_users_list_title()}</h2>
 	<div class="table-card">
 		<table class="rtable">
 			<thead>
 				<tr>
-					<th scope="col">Nombre</th>
-					<th scope="col">Correo</th>
-					<th scope="col">Rol</th>
-					<th scope="col">Creado</th>
+					<th scope="col">{m.field_name()}</th>
+					<th scope="col">{m.field_email()}</th>
+					<th scope="col">{m.admin_users_role()}</th>
+					<th scope="col">{m.admin_users_col_created()}</th>
 				</tr>
 			</thead>
 			<tbody>
 				{#each data.usuarios as u (u.id)}
 					<tr>
-						<td data-label="Nombre"><strong>{u.nombre}</strong></td>
-						<td data-label="Correo" class="email">{u.email}</td>
-						<td data-label="Rol">
+						<td data-label={m.field_name()}><strong>{u.nombre}</strong></td>
+						<td data-label={m.field_email()} class="email">{u.email}</td>
+						<td data-label={m.admin_users_role()}>
 							<span class="rol" class:admin={u.rol === 'admin'}>
-								{u.rol === 'admin' ? 'Admin' : 'Presidente'}
+								{u.rol === 'admin' ? m.admin_users_role_admin() : m.admin_users_role_presidente()}
 							</span>
 						</td>
-						<td data-label="Creado" class="nowrap">{formatDateTime(u.creado_en)}</td>
+						<td data-label={m.admin_users_col_created()} class="nowrap"
+							>{formatDateTime(u.creado_en)}</td
+						>
 					</tr>
 				{/each}
 			</tbody>
