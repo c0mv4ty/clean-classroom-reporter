@@ -1,99 +1,99 @@
-# Deploying to Cloudflare Pages
+# Despliegue en Cloudflare Pages
 
-Step-by-step guide to deploy **Aulas limpias** (SvelteKit 3 + `@sveltejs/adapter-cloudflare`) to
-Cloudflare Pages, backed by an existing Supabase project.
+Guía paso a paso para desplegar **Aulas limpias** (SvelteKit 3 + `@sveltejs/adapter-cloudflare`) en
+Cloudflare Pages, usando un proyecto de Supabase ya existente.
 
-Two ways to deploy. Pick one:
+Hay dos formas de desplegar. Elegir una:
 
-- **2A. Git integration (recommended):** Cloudflare builds and deploys on every push.
-- **2B. Direct upload (CLI):** you build locally and upload with `wrangler`.
+- **2A. Integración con Git (recomendada):** Cloudflare compila y despliega en cada push.
+- **2B. Subida directa (CLI):** se compila en local y se sube con `wrangler`.
 
-## 0. Prerequisites
+## 0. Prerrequisitos
 
-- A Cloudflare account (free plan is enough).
-- Node.js 22+ and `npm install` already run.
-- The Supabase project is set up (migration, seed, first admin). See `README.md` section 1.
-- Three values from Supabase (Project Settings → API):
+- Una cuenta de Cloudflare (el plan gratuito alcanza).
+- Node.js 22+ y `npm install` ya ejecutado.
+- El proyecto de Supabase configurado (migración, seed y primer admin). Ver la sección 1 del `README.md`.
+- Tres valores de Supabase (Project Settings → API):
 
-| Variable                    | Type                 | When it is read                        |
-| --------------------------- | -------------------- | -------------------------------------- |
-| `PUBLIC_SUPABASE_URL`       | plain variable       | **Build time** (inlined in the bundle) |
-| `PUBLIC_SUPABASE_ANON_KEY`  | plain variable       | **Build time** (inlined in the bundle) |
-| `SUPABASE_SERVICE_ROLE_KEY` | encrypted **secret** | Runtime, server only                   |
+| Variable                    | Tipo               | Cuándo se lee                              |
+| --------------------------- | ------------------ | ------------------------------------------ |
+| `PUBLIC_SUPABASE_URL`       | variable en texto  | **Al compilar** (se incrusta en el bundle) |
+| `PUBLIC_SUPABASE_ANON_KEY`  | variable en texto  | **Al compilar** (se incrusta en el bundle) |
+| `SUPABASE_SERVICE_ROLE_KEY` | **secret** cifrado | En ejecución, solo en el servidor          |
 
-> The two `PUBLIC_*` variables are `static`, so they must exist **when `npm run build` runs**. If
-> you add or change them after a build, you must rebuild. Never put the service role key in a
-> plain variable and never commit it.
+> Las dos variables `PUBLIC_*` son `static`, por lo que deben existir **cuando corre
+> `npm run build`**. Si se agregan o cambian después de compilar, hay que volver a compilar. Nunca
+> poner la service role key como variable en texto plano y nunca commitearla.
 
-## 1. Verify the build locally
+## 1. Verificar el build en local
 
 ```sh
-cp .env.example .env      # fill in the three values
+cp .env.example .env      # completar los tres valores
 npm run check
 npm run build
 npm run preview           # http://localhost:4173
 ```
 
-Log in at `/login` and make sure the app works before touching Cloudflare.
+Iniciar sesión en `/login` y comprobar que la app funciona antes de tocar Cloudflare.
 
-## 2A. Git integration (dashboard)
+## 2A. Integración con Git (dashboard)
 
-1. Cloudflare dashboard → **Workers & Pages** → **Create** → **Pages** → **Connect to Git**.
-2. Authorize GitHub and select `thealeeeh/MA_Aulas`. Production branch: `main`.
-3. Build settings:
-   - Framework preset: **SvelteKit** (or None)
+1. Dashboard de Cloudflare → **Workers & Pages** → **Create** → **Pages** → **Connect to Git**.
+2. Autorizar GitHub y seleccionar `thealeeeh/MA_Aulas`. Rama de producción: `main`.
+3. Configuración de build:
+   - Framework preset: **SvelteKit** (o None)
    - Build command: `npm run build`
    - Build output directory: `.svelte-kit/cloudflare`
-4. Environment variables (add them for **Production** and **Preview**):
-   - `PUBLIC_SUPABASE_URL` → plain text
-   - `PUBLIC_SUPABASE_ANON_KEY` → plain text
+4. Variables de entorno (agregarlas en **Production** y **Preview**):
+   - `PUBLIC_SUPABASE_URL` → texto plano
+   - `PUBLIC_SUPABASE_ANON_KEY` → texto plano
    - `SUPABASE_SERVICE_ROLE_KEY` → **Encrypt**
-   - `NODE_VERSION` → `22` (plain text, pins the build image)
-5. **Save and Deploy**. The first build takes a couple of minutes.
-6. Open the `https://<project>.pages.dev` URL and go to section 3 below.
+   - `NODE_VERSION` → `22` (texto plano, fija la versión de Node del build)
+5. **Save and Deploy**. El primer build tarda un par de minutos.
+6. Abrir la URL `https://<proyecto>.pages.dev` y continuar con la sección 3.
 
-## 2B. Direct upload (CLI)
+## 2B. Subida directa (CLI)
 
-`wrangler` is a dev dependency, so use `npx`.
+`wrangler` es una dependencia de desarrollo, así que se usa con `npx`.
 
 ```sh
 npx wrangler login
 npx wrangler pages project create aulas-limpias --production-branch main
-npm run build                       # needs the PUBLIC_* values in .env
+npm run build                       # necesita los valores PUBLIC_* en .env
 npx wrangler pages secret put SUPABASE_SERVICE_ROLE_KEY --project-name aulas-limpias
 npx wrangler pages deploy --project-name aulas-limpias
 ```
 
-`wrangler.toml` already sets `pages_build_output_dir` and `nodejs_compat`, so no output path is
-needed. Repeat `npm run build` + `pages deploy` for each new release.
+`wrangler.toml` ya define `pages_build_output_dir` y `nodejs_compat`, así que no hace falta indicar
+la carpeta de salida. Para cada nueva versión, repetir `npm run build` + `pages deploy`.
 
-## 3. Point Supabase at the deployed URL
+## 3. Apuntar Supabase a la URL desplegada
 
 Supabase → Authentication → **URL Configuration**:
 
-- **Site URL:** `https://<project>.pages.dev` (or your custom domain)
-- **Redirect URLs:** add the same URL.
+- **Site URL:** `https://<proyecto>.pages.dev` (o el dominio propio)
+- **Redirect URLs:** agregar la misma URL.
 
-## 4. Smoke test (checklist for the reviewer)
+## 4. Prueba de humo (checklist para quien revisa)
 
-- [ ] `/login` loads, styles and icons render, language switch works (ES/EN).
-- [ ] Login with the admin user succeeds and redirects to the classroom list.
-- [ ] A classroom can be reported; a dirty → clean report requires a photo.
-- [ ] `/admin/usuarios` can create a presidente (this uses `SUPABASE_SERVICE_ROLE_KEY`; if it
-      fails with a server error, the secret is missing).
-- [ ] Open the site on a phone width (mobile-first layout, responsive navbar).
+- [ ] `/login` carga, los estilos e iconos se ven y el cambio de idioma (ES/EN) funciona.
+- [ ] El login con el usuario admin funciona y redirige a la lista de aulas.
+- [ ] Se puede reportar un aula; pasar de sucio a limpio exige una foto.
+- [ ] `/admin/usuarios` permite crear un presidente (usa `SUPABASE_SERVICE_ROLE_KEY`; si falla con
+      error de servidor, falta el secret).
+- [ ] Abrir el sitio en ancho de celular (diseño mobile-first, navbar responsive).
 
-## Troubleshooting
+## Solución de problemas
 
-| Symptom                                   | Likely cause / fix                                                                           |
-| ----------------------------------------- | -------------------------------------------------------------------------------------------- |
-| Build fails on `wrangler types`           | Check Node version (`NODE_VERSION=22`) and that `npm install` ran from the lockfile          |
-| App loads but every Supabase call fails   | `PUBLIC_*` vars were missing at build time. Set them and trigger a new deploy                |
-| 500 only when creating users              | `SUPABASE_SERVICE_ROLE_KEY` not set as a secret for that environment (Production vs Preview) |
-| Login works locally but not in production | Supabase Site URL / Redirect URLs not updated (section 3)                                    |
-| Changed a variable but nothing changed    | Variables apply to the **next** build. Retry the deployment                                  |
+| Síntoma                                                | Causa probable / solución                                                              |
+| ------------------------------------------------------ | -------------------------------------------------------------------------------------- |
+| El build falla en `wrangler types`                     | Revisar la versión de Node (`NODE_VERSION=22`) y que `npm install` use el lockfile     |
+| La app carga pero fallan todas las llamadas a Supabase | Faltaban las variables `PUBLIC_*` al compilar. Definirlas y lanzar un nuevo despliegue |
+| Error 500 solo al crear usuarios                       | `SUPABASE_SERVICE_ROLE_KEY` no está como secret en ese entorno (Production vs Preview) |
+| El login funciona en local pero no en producción       | Site URL / Redirect URLs de Supabase sin actualizar (sección 3)                        |
+| Cambié una variable y no pasó nada                     | Las variables se aplican en el **siguiente** build. Reintentar el despliegue           |
 
 ## Rollback
 
-Workers & Pages → project → **Deployments** → pick a previous successful deployment →
+Workers & Pages → proyecto → **Deployments** → elegir un despliegue anterior exitoso →
 **Rollback to this deployment**.
