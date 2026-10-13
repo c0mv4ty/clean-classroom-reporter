@@ -50,21 +50,6 @@ Iniciar sesión en `/login` y comprobar que la app funciona antes de tocar Cloud
 5. **Save and Deploy**. El primer build tarda un par de minutos.
 6. Abrir la URL `https://<proyecto>.pages.dev` y continuar con la sección 3.
 
-## 2B. Subida directa (CLI)
-
-`wrangler` es una dependencia de desarrollo, así que se usa con `npx`.
-
-```sh
-npx wrangler login
-npx wrangler pages project create aulas-limpias --production-branch main
-npm run build                       # necesita los valores PUBLIC_* en .env
-npx wrangler pages secret put SUPABASE_SERVICE_ROLE_KEY --project-name aulas-limpias
-npx wrangler pages deploy --project-name aulas-limpias
-```
-
-`wrangler.toml` ya define `pages_build_output_dir` y `nodejs_compat`, así que no hace falta indicar
-la carpeta de salida. Para cada nueva versión, repetir `npm run build` + `pages deploy`.
-
 ## 3. Apuntar Supabase a la URL desplegada
 
 Supabase → Authentication → **URL Configuration**:
