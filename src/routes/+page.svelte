@@ -1,84 +1,78 @@
 <script lang="ts">
-	import EstadoBadge from '#lib/components/EstadoBadge.svelte';
-	import { ESTADO_LABEL, ESTADOS } from '#lib/estados.ts';
+	import AulaCard from '#lib/components/AulaCard.svelte';
+	import PageHeader from '#lib/components/PageHeader.svelte';
+	import StateSummary from '#lib/components/StateSummary.svelte';
 	import { formatDateTime } from '#lib/format.ts';
 	import type { PageProps } from './$types';
 
 	let { data }: PageProps = $props();
 
-	const resumen = $derived(
-		ESTADOS.map((estado) => ({
-			estado,
-			total: data.aulas.filter((a) => a.estado_actual === estado).length
-		}))
+	const ultimaActualizacion = $derived(
+		data.aulas
+			.map((a) => a.actualizado_en)
+			.filter((d): d is string => Boolean(d))
+			.sort()
+			.at(-1)
 	);
 </script>
 
 <svelte:head>
-	<title>Aulas · Aulas limpias</title>
+	<title>Aulas · ESPOCH Aulas limpias</title>
 </svelte:head>
 
-<h1>Estado de las aulas</h1>
+<PageHeader
+	title="Estado de las aulas"
+	description={ultimaActualizacion
+		? `Última actualización: ${formatDateTime(ultimaActualizacion)}. Elige un aula para reportar su estado.`
+		: 'Elige un aula para reportar su estado.'}
+/>
 
-<p class="resumen">
-	{#each resumen as r (r.estado)}
-		<span class="badge {r.estado}">{ESTADO_LABEL[r.estado]}: {r.total}</span>
-	{/each}
-</p>
+<StateSummary estados={data.aulas.map((a) => a.estado_actual)} />
 
-<ul class="grid">
-	{#each data.aulas as aula (aula.id)}
-		<li>
-			<a class="card aula {aula.estado_actual}" href="/aulas/{aula.id}">
-				<strong>{aula.nombre}</strong>
-				<EstadoBadge estado={aula.estado_actual} />
-				<small class="muted">Actualizado: {formatDateTime(aula.actualizado_en)}</small>
-			</a>
-		</li>
-	{/each}
-</ul>
+{#if data.aulas.length === 0}
+	<p class="empty muted">
+		No hay aulas registradas todavía. La administración debe cargarlas primero.
+	</p>
+{:else}
+	<ul class="grid" aria-label="Aulas">
+		{#each data.aulas as aula (aula.id)}
+			<li><AulaCard {aula} /></li>
+		{/each}
+	</ul>
+{/if}
 
 <style>
-	.resumen {
-		display: flex;
-		flex-wrap: wrap;
-		gap: 0.5rem;
-		margin: 0 0 1rem;
-	}
-
 	.grid {
 		list-style: none;
 		padding: 0;
 		margin: 0;
 		display: grid;
-		grid-template-columns: repeat(auto-fill, minmax(9.5rem, 1fr));
-		gap: 0.75rem;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: var(--space-3);
 	}
 
-	.aula {
-		display: grid;
-		gap: 0.4rem;
-		justify-items: start;
-		text-decoration: none;
-		color: inherit;
-		border-left: 5px solid var(--border);
-		height: 100%;
+	.grid li {
+		min-width: 0;
 	}
 
-	.aula.limpio {
-		border-left-color: var(--limpio);
+	.empty {
+		padding: var(--space-5);
+		text-align: center;
+		background: var(--color-surface);
+		border: var(--border-width) dashed var(--color-border-strong);
+		border-radius: var(--radius-md);
 	}
 
-	.aula.medio_limpio {
-		border-left-color: var(--medio);
+	@media (min-width: 640px) {
+		.grid {
+			grid-template-columns: repeat(3, minmax(0, 1fr));
+			gap: var(--space-4);
+		}
 	}
 
-	.aula.sucio {
-		border-left-color: var(--sucio);
-	}
-
-	.aula:hover,
-	.aula:focus-visible {
-		box-shadow: 0 2px 8px rgb(0 0 0 / 8%);
+	@media (min-width: 1024px) {
+		.grid {
+			grid-template-columns: repeat(4, minmax(0, 1fr));
+		}
 	}
 </style>
