@@ -1,6 +1,8 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
 	import Button from '#lib/components/Button.svelte';
+	import LanguageSwitch from '#lib/components/LanguageSwitch.svelte';
+	import { m } from '#lib/paraglide/messages.js';
 	import ThemeToggle from '#lib/components/ThemeToggle.svelte';
 	import { ICON_SIZE } from '#lib/components/icon-size.ts';
 	import { TriangleAlert } from '@lucide/svelte';
@@ -11,20 +13,20 @@
 </script>
 
 <svelte:head>
-	<title>Ingresar · ESPOCH Aulas limpias</title>
+	<title>{m.meta_title({ page: m.login_title() })}</title>
 </svelte:head>
 
 <div class="login-page">
 	<div class="theme"><ThemeToggle /></div>
 	<div class="brand">
 		<p class="mark">ESPOCH</p>
-		<p class="sub">Aulas limpias</p>
+		<p class="sub">{m.app_name()}</p>
 	</div>
 
 	<section class="card" aria-labelledby="login-titulo">
 		<div class="intro">
-			<h1 id="login-titulo">Ingresar</h1>
-			<p class="muted">Acceso para presidentes de curso y administración.</p>
+			<h1 id="login-titulo">{m.login_title()}</h1>
+			<p class="muted">{m.login_intro()}</p>
 		</div>
 
 		<form
@@ -38,7 +40,7 @@
 			}}
 		>
 			<label class="field">
-				<span class="field-label">Correo</span>
+				<span class="field-label">{m.field_email()}</span>
 				<input
 					class="input"
 					name="email"
@@ -49,7 +51,7 @@
 				/>
 			</label>
 			<label class="field">
-				<span class="field-label">Contraseña</span>
+				<span class="field-label">{m.field_password()}</span>
 				<input
 					class="input"
 					name="password"
@@ -67,12 +69,14 @@
 			{/if}
 
 			<Button type="submit" variant="primary" block disabled={submitting}>
-				{submitting ? 'Ingresando…' : 'Ingresar'}
+				{submitting ? m.login_submitting() : m.login_title()}
 			</Button>
 		</form>
 	</section>
 
-	<p class="foot">Escuela Superior Politécnica de Chimborazo</p>
+	<LanguageSwitch variant="link" />
+
+	<p class="foot">{m.login_institution()}</p>
 </div>
 
 <style>

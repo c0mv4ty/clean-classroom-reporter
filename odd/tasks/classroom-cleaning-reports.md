@@ -29,7 +29,7 @@ There is no traceable record of classroom cleanliness. Presidents move between c
 - [x] T5 Admin UI: report history with evidence, user creation (service role, server-only)
 - [x] T6 Deploy: wrangler config, env vars docs, README
 - [x] T7 Redesign UI with ESPOCH identity (red #BC0613, Work Sans + Inter), mobile-first, design tokens, shared components; fix home grid overflow and native file input; photo label required when aula is sucio; + Lucide icons, light/dark themes, responsive navbar with user menu
-- [ ] T8 i18n ES/EN with Paraglide JS: extract all UI + server-action messages; language switch inside user menu (mobile), inline on ≥640px, link under login card
+- [x] T8 i18n ES/EN with Paraglide JS: extract all UI + server-action messages; language switch inside user menu (mobile), inline on ≥640px, link under login card
 
 ## Acceptance criteria
 - Unauthenticated users cannot access any page except `/login`.
@@ -55,6 +55,7 @@ There is no traceable record of classroom cleanliness. Presidents move between c
 | T5 | delegated | 833485d | History paginated (50/page) with batch signed URLs (1h); user list emails via service-role `listUsers`. |
 | T6 | delegated | 2d77a4e | `wrangler.toml` landed in T1; README covers Supabase setup, first admin, env vars, Pages deploy. |
 | T7 | delegated (writer; 2+ non-trivial files) | 356b3b4 | Branch `feat/espoch-redesign`. Semantic `--color-*` tokens with light/dark (prefers-color-scheme + `data-theme`, pre-paint script in app.html, toggle persisted in localStorage). `@lucide/svelte` added as devDependency. Header: menu panel on mobile (nav, theme, Salir), inline nav + ThemeToggle + user menu from 640px; language-switch snippet slot reserved for T8. Photo label 'obligatoria' when aula is sucio (and new state not sucio); `required` still mirrors `requiresPhoto`. Admin tables stack as cards below 640px. No server/load/action changes. ~2.4k authored lines (one coherent redesign; not split). |
+| T8 | delegated (writer) | see git log (`feat(i18n)`, `feat(ui): add language switch`) | Branch `feat/i18n`. Paraglide JS via `sv add` (strategy cookie, preferredLanguage, baseLocale; clean URLs). `messages/{es,en}.json`, all UI + server-action messages, locale-aware `formatDateTime` (America/Lima kept), `LanguageSwitch` in header (>=640px), menu panel (mobile) and login link. DB trigger evidence message now mapped via its `evidencia_requerida` hint to a localized message; other check violations use the generic save error. Fixes to the add-on output: handle `sequence` ordering, removed hidden link block and `src/hooks.ts` reroute (not needed without URL strategy); `tsconfig` `checkJs: false` so generated paraglide JS is not type-checked. |
 
 ## Verification evidence
 - `npm run check`: 0 errors, 0 warnings (307 files).
@@ -62,6 +63,8 @@ There is no traceable record of classroom cleanliness. Presidents move between c
 - Test-first exception: no JS test runner or Supabase CLI; SQL rules exercised manually on plain Postgres via `supabase/tests/rules_scenarios.sql`.
 
 - T7: `npm run check`: 0 errors, 0 warnings. `npm run build`: success. Playwright (temp dev server :5181): `scrollWidth <= clientWidth` at 360px on login, home, aula detail, admin, admin/usuarios (also 640/1280); mobile menu opens, closes on Escape (focus returns to trigger), outside click and navigation; dark theme persists across reload. Screenshots in `.playwright-mcp/` (gitignored). Test data: one `sucio` report on Aula 28 created to view the required-photo state.
+
+- T8: `npm run check`: 0 errors, 0 warnings. `npm run build`: success. Playwright (temp dev server :5190): EN/ES switch from the mobile menu (360px), inline header (1280px) and login link; `PARAGLIDE_LOCALE` cookie persists across reload and `<html lang>` follows it; wrong-password error shown in the selected language; no horizontal overflow at 360px. Screenshots in `.playwright-mcp/i18n-*.png`.
 
 ## Next step
 Manual: create Supabase project, run migration + seed, disable signup, promote first admin, set env vars locally and in Cloudflare Pages. Then smoke-test login, report flow and admin pages against the real project.

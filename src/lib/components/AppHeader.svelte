@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { LayoutGrid, RotateCcwClock, Users } from '@lucide/svelte';
-	import type { Snippet } from 'svelte';
+	import { m } from '#lib/paraglide/messages.js';
+	import LanguageSwitch from './LanguageSwitch.svelte';
 	import NavLinks, { type NavLink } from './NavLinks.svelte';
 	import ThemeToggle from './ThemeToggle.svelte';
 	import UserMenu from './UserMenu.svelte';
@@ -9,16 +10,14 @@
 		nombre: string;
 		isAdmin: boolean;
 		pathname: string;
-		/** Reserved for the future ES/EN switch (Paraglide i18n follow-up). Not rendered when absent. */
-		languageSwitch?: Snippet;
 	};
 
-	let { nombre, isAdmin, pathname, languageSwitch }: Props = $props();
+	let { nombre, isAdmin, pathname }: Props = $props();
 
 	const links = $derived<NavLink[]>([
 		{
 			href: '/',
-			label: 'Aulas',
+			label: m.nav_classrooms(),
 			icon: LayoutGrid,
 			current: pathname === '/' || pathname.startsWith('/aulas')
 		},
@@ -26,13 +25,13 @@
 			? [
 					{
 						href: '/admin',
-						label: 'Historial',
+						label: m.nav_history(),
 						icon: RotateCcwClock,
 						current: pathname === '/admin'
 					},
 					{
 						href: '/admin/usuarios',
-						label: 'Usuarios',
+						label: m.nav_users(),
 						icon: Users,
 						current: pathname.startsWith('/admin/usuarios')
 					}
@@ -43,9 +42,9 @@
 
 <header class="app-header">
 	<div class="container bar">
-		<a href="/" class="wordmark" aria-label="ESPOCH, Aulas limpias: inicio">
+		<a href="/" class="wordmark" aria-label={m.nav_home_aria()}>
 			<span class="mark">ESPOCH</span>
-			<span class="sub">Aulas limpias</span>
+			<span class="sub">{m.app_name()}</span>
 		</a>
 
 		<div class="inline-nav">
@@ -53,16 +52,12 @@
 		</div>
 
 		<div class="actions">
-			{#if languageSwitch}
-				<!-- Reserved: ES/EN language switch (Paraglide i18n follow-up). -->
-				<div class="inline-only">{@render languageSwitch()}</div>
-			{/if}
+			<div class="inline-only"><LanguageSwitch variant="bar" /></div>
 			<div class="inline-only"><ThemeToggle /></div>
 			<UserMenu
 				{nombre}
-				rolLabel={isAdmin ? 'Administración' : 'Presidente de curso'}
+				rolLabel={isAdmin ? m.nav_role_admin() : m.nav_role_presidente()}
 				{links}
-				{languageSwitch}
 			/>
 		</div>
 	</div>

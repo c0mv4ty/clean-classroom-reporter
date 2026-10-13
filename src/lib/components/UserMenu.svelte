@@ -1,8 +1,9 @@
 <script lang="ts">
 	import { CircleUser, LogOut, Menu, X } from '@lucide/svelte';
-	import type { Snippet } from 'svelte';
 	import { afterNavigate } from '$app/navigation';
+	import { m } from '#lib/paraglide/messages.js';
 	import { ICON_SIZE } from './icon-size.ts';
+	import LanguageSwitch from './LanguageSwitch.svelte';
 	import NavLinks, { type NavLink } from './NavLinks.svelte';
 	import ThemeSelect from './ThemeSelect.svelte';
 
@@ -10,11 +11,9 @@
 		nombre: string;
 		rolLabel: string;
 		links: NavLink[];
-		/** Reserved for the future ES/EN switch (Paraglide i18n follow-up). Not rendered when absent. */
-		languageSwitch?: Snippet;
 	};
 
-	let { nombre, rolLabel, links, languageSwitch }: Props = $props();
+	let { nombre, rolLabel, links }: Props = $props();
 
 	const panelId = $props.id();
 	let open = $state(false);
@@ -51,7 +50,7 @@
 		bind:this={trigger}
 		type="button"
 		class="trigger"
-		aria-label="Abrir menú"
+		aria-label={m.nav_open_menu()}
 		aria-expanded={open}
 		aria-controls={panelId}
 		onclick={() => (open = !open)}
@@ -81,15 +80,14 @@
 			<ThemeSelect />
 		</div>
 
-		{#if languageSwitch}
-			<!-- Reserved: ES/EN language switch (Paraglide i18n follow-up). -->
-			<div class="section">{@render languageSwitch()}</div>
-		{/if}
+		<div class="mobile-only section">
+			<LanguageSwitch variant="menu" />
+		</div>
 
 		<form method="POST" action="/logout" class="section">
 			<button type="submit" class="logout">
 				<LogOut size={ICON_SIZE.sm} aria-hidden="true" />
-				Salir
+				{m.nav_logout()}
 			</button>
 		</form>
 	</div>
