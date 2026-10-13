@@ -3,10 +3,8 @@
 Guía paso a paso para desplegar **Aulas limpias** (SvelteKit 3 + `@sveltejs/adapter-cloudflare`) en
 Cloudflare Pages, usando un proyecto de Supabase ya existente.
 
-Hay dos formas de desplegar. Elegir una:
-
-- **2A. Integración con Git (recomendada):** Cloudflare compila y despliega en cada push.
-- **2B. Subida directa (CLI):** se compila en local y se sube con `wrangler`.
+El despliegue se hace con **integración con Git**: Cloudflare compila y despliega automáticamente
+en cada push a `main` (y crea un preview por cada otra rama o PR).
 
 ## 0. Prerrequisitos
 
@@ -36,7 +34,7 @@ npm run preview           # http://localhost:4173
 
 Iniciar sesión en `/login` y comprobar que la app funciona antes de tocar Cloudflare.
 
-## 2A. Integración con Git (dashboard)
+## 2. Conectar el repositorio en Cloudflare
 
 1. Dashboard de Cloudflare → **Workers & Pages** → **Create** → **Pages** → **Connect to Git**.
 2. Autorizar GitHub y seleccionar `thealeeeh/MA_Aulas`. Rama de producción: `main`.
