@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { LayoutGrid, QrCode, RotateCcwClock, Users } from '@lucide/svelte';
+	import { House, LayoutGrid, QrCode, RotateCcwClock, Users } from '@lucide/svelte';
 	import { m } from '#lib/paraglide/messages.js';
 	import LanguageSwitch from './LanguageSwitch.svelte';
 	import NavLinks, { type NavLink } from './NavLinks.svelte';
@@ -17,8 +17,9 @@
 	const links = $derived<NavLink[]>([
 		{
 			href: '/',
-			label: m.nav_classrooms(),
-			icon: LayoutGrid,
+			// Presidentes have no classroom list: their `/` is a home with the QR instructions.
+			label: isAdmin ? m.nav_classrooms() : m.nav_home(),
+			icon: isAdmin ? LayoutGrid : House,
 			current: pathname === '/' || pathname.startsWith('/aulas')
 		},
 		...(isAdmin

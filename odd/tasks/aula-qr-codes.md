@@ -21,6 +21,8 @@ PRODUCT.md principle 4: "Scan, sign in, report." The deep link already works (`/
 ## Tasks
 - [x] T1 `/admin/qr` page: server load (assertAdmin, aulas list, origin), SVG QR per aula, print stylesheet, admin nav link, es/en messages. Route: delegated writer (3+ non-trivial files).
 
+- [x] T2 Presidente home: `/` shows only an instruction (scan the classroom QR) plus the presidente's own recent reports; the classroom grid stays for admin. UI-only change (RLS unchanged: `reportes_select_authenticated` allows filtering by `usuario_id`). Decision by user: "Instruction + own recent reports". Route: delegated writer (3+ non-trivial files).
+
 ## Delivery
 Strategy: ask-on-risk; forecast well under 400 authored lines; one work-unit commit on `feat/aula-qr`.
 
@@ -33,5 +35,11 @@ Strategy: ask-on-risk; forecast well under 400 authored lines; one work-unit com
 - Parent spot check: `npm run check` 0 errors, prettier clean on `src`, `messages`, `package.json`. Route: delegated writer (3+ non-trivial files). Commit: `feat(admin): add printable QR codes per classroom` on `feat/aula-qr`.
 - Open: the writer saw an unexplained redirect to `/` twice during browser checks (not reproduced in 3 attempts); Spanish copy not yet viewed in the browser; non-admin access verified by code reading only.
 
+- T2 implemented by the writer (uncommitted, parent to verify and commit): `src/routes/+page.server.ts` branches by `locals.profile.rol` (admin keeps the aulas grid, presidente gets only its own last 10 reports); `+page.svelte` presidente branch (3-step instruction + `MisReportes.svelte`); AppHeader relabels the presidente's `/` link as "Inicio"/"Home" (House icon); new `home_*`/`nav_home` messages in es/en; `aula_back` now reads "Volver al inicio"/"Back to home".
+- Observed by the writer (T2): `npm run check` 0 errors; prettier clean on `src`, `messages`, `package.json`. Browser (Playwright, local Supabase): as `presidente@example.com`, `/aulas/12` while signed out redirected to login and returned to `/aulas/12` after sign-in; two reports created (Aula 12 medio limpio, Aula 3 sucio); `/` then showed 0 classroom links, the instruction and the 2 reports newest first; `/admin` and `/admin/qr` redirected to `/`; as admin, `/` still showed 28 classroom cards and the 4 admin links. Verified in es and en, desktop (1280) and mobile (390); screenshots in `.playwright-mcp/t2-*.png`. Route: delegated writer (3+ non-trivial files).
+- The redirect-to-`/` seen during T1 was not reproduced; the shared Playwright browser held a presidente session at the start of T2, which would explain it (a presidente is redirected from `/admin/*`). This is an inference, not confirmed.
+- Decision (user): protection stays UI-only; signed QR and DB-level enforcement were offered and declined ("Dejarlo como está").
+- Open: the instruction has no fallback for a presidente who cannot scan (by design, per the user); the presidente can still reach any `/aulas/<id>` by URL (RLS unchanged, UI-only restriction).
+
 ## Next step
-Manual check of `/admin/qr` in Spanish and as a presidente, then push and open a PR (user decision).
+T2 committed as `feat(home): show QR instruction and own reports to presidentes`. Push and open a PR (user decision).
