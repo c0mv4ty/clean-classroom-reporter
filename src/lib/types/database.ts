@@ -2,7 +2,7 @@
 // Regenerate with `supabase gen types typescript` if the schema grows.
 
 export type Rol = 'presidente' | 'admin';
-export type EstadoAula = 'limpio' | 'medio_limpio' | 'sucio';
+export type EstadoAula = 'limpio' | 'sucio';
 
 export type Database = {
 	public: {

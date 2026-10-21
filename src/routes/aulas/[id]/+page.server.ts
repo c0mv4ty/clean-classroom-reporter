@@ -56,8 +56,7 @@ export const actions: Actions = {
 
 		const estado = form.get('estado');
 		const nota = String(form.get('nota') ?? '').trim();
-		const foto = form.get('foto');
-		const hasPhoto = foto instanceof File && foto.size > 0;
+		const fotoField = form.get('foto');
 
 		if (!isEstado(estado)) {
 			return fail(400, { nota, message: m.report_error_estado_missing() });
@@ -68,32 +67,28 @@ export const actions: Actions = {
 				message: m.report_error_note_too_long({ max: MAX_NOTE_LENGTH })
 			});
 		}
-		if (hasPhoto && !EXTENSION_BY_TYPE[foto.type]) {
+
+		// A photo only counts as evidence for a `sucio` report; for `limpio` any file is ignored
+		// and never uploaded.
+		const foto =
+			requiresPhoto(estado) && fotoField instanceof File && fotoField.size > 0 ? fotoField : null;
+
+		// Early, friendly check. The DB trigger enforces the same rule authoritatively.
+		if (requiresPhoto(estado) && !foto) {
+			return fail(400, { nota, message: m.report_error_evidence_required() });
+		}
+		if (foto && !EXTENSION_BY_TYPE[foto.type]) {
 			return fail(400, { nota, message: m.report_error_photo_type() });
 		}
-		if (hasPhoto && foto.size > MAX_PHOTO_BYTES) {
+		if (foto && foto.size > MAX_PHOTO_BYTES) {
 			return fail(400, {
 				nota,
 				message: m.report_error_photo_size({ max: MAX_PHOTO_BYTES / (1024 * 1024) })
 			});
 		}
 
-		// Early, friendly check. The DB trigger enforces the same rule authoritatively.
-		const { data: aula } = await locals.supabase
-			.from('aulas')
-			.select('estado_actual')
-			.eq('id', aulaId)
-			.maybeSingle();
-		if (!aula) error(404, m.aula_not_found());
-		if (requiresPhoto(aula.estado_actual, estado) && !hasPhoto) {
-			return fail(400, {
-				nota,
-				message: m.report_error_evidence_required()
-			});
-		}
-
 		let fotoPath: string | null = null;
-		if (hasPhoto) {
+		if (foto) {
 			fotoPath = `${aulaId}/${crypto.randomUUID()}.${EXTENSION_BY_TYPE[foto.type]}`;
 			const { error: uploadError } = await locals.supabase.storage
 				.from('evidencias')

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Camera, ImageIcon } from '@lucide/svelte';
+	import { Camera, ImageIcon, TriangleAlert } from '@lucide/svelte';
 	import { m } from '#lib/paraglide/messages.js';
 	import { ICON_SIZE } from './icon-size.ts';
 
@@ -7,13 +7,20 @@
 		name: string;
 		label: string;
 		hint?: string;
+		/** Visual and ARIA emphasis only; validation is done by the parent so the message is localized. */
 		required?: boolean;
+		error?: string;
+		onselect?: (file: File | null) => void;
 	};
 
-	let { name, label, hint, required = false }: Props = $props();
+	let { name, label, hint, required = false, error, onselect }: Props = $props();
 
 	const inputId = $props.id();
 	const hintId = `${inputId}-hint`;
+	const errorId = `${inputId}-error`;
+	const describedBy = $derived(
+		[hint ? hintId : null, error ? errorId : null].filter(Boolean).join(' ')
+	);
 
 	let input = $state<HTMLInputElement>();
 	let fileName = $state<string | null>(null);
@@ -26,12 +33,15 @@
 	}
 
 	function onchange(event: Event & { currentTarget: HTMLInputElement }) {
-		setPreview(event.currentTarget.files?.[0] ?? null);
+		const file = event.currentTarget.files?.[0] ?? null;
+		setPreview(file);
+		onselect?.(file);
 	}
 
 	function clear() {
 		if (input) input.value = '';
 		setPreview(null);
+		onselect?.(null);
 	}
 
 	// Clear the preview when the enclosing form is reset (e.g. after a successful submit).
@@ -63,9 +73,10 @@
 			{name}
 			accept="image/*"
 			capture="environment"
-			{required}
+			aria-required={required || undefined}
+			aria-invalid={error ? true : undefined}
 			aria-labelledby="{inputId}-label {inputId}-action"
-			aria-describedby={hint ? hintId : undefined}
+			aria-describedby={describedBy || undefined}
 			{onchange}
 		/>
 		<label class="btn trigger" for={inputId} id="{inputId}-action">
@@ -89,6 +100,13 @@
 			>
 		{/if}
 	</div>
+
+	{#if error}
+		<p class="alert error" id={errorId} role="alert">
+			<TriangleAlert size={ICON_SIZE.sm} aria-hidden="true" />
+			{error}
+		</p>
+	{/if}
 </div>
 
 <style>
@@ -102,12 +120,12 @@
 	}
 
 	.required .row {
-		border-color: var(--color-medio-solid);
-		background: var(--color-medio-bg);
+		border-color: var(--color-warning-solid);
+		background: var(--color-warning-bg);
 	}
 
 	.required .hint {
-		color: var(--color-medio-fg);
+		color: var(--color-warning-fg);
 	}
 
 	.trigger {

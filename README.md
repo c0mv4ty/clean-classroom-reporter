@@ -1,21 +1,31 @@
 # Aulas limpias
 
-Micro app where class presidents report the cleaning state of classrooms (`aulas`), with photo
-evidence required when a dirty (`sucio`) classroom is reported as clean again.
+Micro app where class presidents report the cleaning state of classrooms (`aulas`) by scanning the
+QR code on the door. A classroom is either clean (`limpio`) or dirty (`sucio`); a photo is
+required as evidence only when a classroom is reported dirty.
 
 - **Stack:** SvelteKit 3 (Svelte 5 runes, TypeScript) on Cloudflare Pages, Supabase (Auth,
   Postgres with RLS, private Storage bucket `evidencias`).
 - **Roles:** `presidente` (reports any classroom) and `admin` (creates users, sees the full
   history with evidence photos). Public signup is disabled.
-- **Rules enforced in the database:** the evidence rule and `aulas.estado_actual` sync live in a
-  trigger (`supabase/migrations/20261012000000_init.sql`); reports are append-only.
+- **Rules enforced in the database:** the evidence rule (photo required iff the report is `sucio`)
+  and the `aulas.estado_actual` sync live in a trigger (`supabase/migrations/`); reports are
+  append-only.
 
 ## 1. Supabase setup
 
 1. Create a Supabase project.
-2. Run the migration, then the seed, in the SQL editor (or with the Supabase CLI):
+2. Run the migrations in order, then the seed, in the SQL editor (or with the Supabase CLI):
    - `supabase/migrations/20261012000000_init.sql` (schema, triggers, RLS, `evidencias` bucket)
+   - `supabase/migrations/20261021000000_two_state_photo_rule.sql` (two states, photo required
+     only for `sucio`)
    - `supabase/seed.sql` (28 classrooms, "Aula 1" .. "Aula 28")
+
+   > **Existing production database?** Run `20261021000000_two_state_photo_rule.sql` in the SQL
+   > editor (as `postgres`) **before** deploying the app version that ships this change, or the
+   > app and the database will disagree about the allowed states. It converts reports and
+   > classrooms left in the removed third state to `limpio`.
+
 3. **Disable public signup:** Authentication → Sign In / Providers → turn off "Allow new users
    to sign up". Users are created only by the admin from `/admin/usuarios`.
 4. **Create the first admin.** Create a user in Authentication → Users → "Add user" (tick

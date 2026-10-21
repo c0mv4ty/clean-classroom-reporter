@@ -36,14 +36,16 @@
 	--color-limpio-bg: #ecfdf3;
 	--color-limpio-border: #abefc6;
 	--color-limpio-solid: #17b26a;
-	--color-medio-fg: #93370d;
-	--color-medio-bg: #fffaeb;
-	--color-medio-border: #fedf89;
-	--color-medio-solid: #f79009;
 	--color-sucio-fg: #912018;
 	--color-sucio-bg: #fef3f2;
 	--color-sucio-border: #fecdca;
 	--color-sucio-solid: #d92d20;
+
+	/* Warning: attention surfaces that are not a cleaning state (required photo, notices) */
+	--color-warning-fg: #93370d;
+	--color-warning-bg: #fffaeb;
+	--color-warning-border: #fedf89;
+	--color-warning-solid: #f79009;
 
 	--shadow-sm: 0 1px 2px rgb(16 24 40 / 6%);
 	--shadow-md: 0 4px 12px rgb(16 24 40 / 8%), 0 1px 3px rgb(16 24 40 / 6%);
@@ -83,14 +85,14 @@
 		--color-limpio-bg: #0d2a1c;
 		--color-limpio-border: #1f5c3d;
 		--color-limpio-solid: #32c27d;
-		--color-medio-fg: #fec84b;
-		--color-medio-bg: #2d2107;
-		--color-medio-border: #6b4a0b;
-		--color-medio-solid: #f5a524;
 		--color-sucio-fg: #fda29b;
 		--color-sucio-bg: #3a1311;
 		--color-sucio-border: #7a2620;
 		--color-sucio-solid: #f04438;
+		--color-warning-fg: #fec84b;
+		--color-warning-bg: #2d2107;
+		--color-warning-border: #6b4a0b;
+		--color-warning-solid: #f5a524;
 		--shadow-sm: 0 1px 2px rgb(0 0 0 / 40%);
 		--shadow-md: 0 4px 12px rgb(0 0 0 / 45%), 0 1px 3px rgb(0 0 0 / 40%);
 		--shadow-lg: 0 12px 32px rgb(0 0 0 / 55%);
@@ -124,14 +126,14 @@
 	--color-limpio-bg: #0d2a1c;
 	--color-limpio-border: #1f5c3d;
 	--color-limpio-solid: #32c27d;
-	--color-medio-fg: #fec84b;
-	--color-medio-bg: #2d2107;
-	--color-medio-border: #6b4a0b;
-	--color-medio-solid: #f5a524;
 	--color-sucio-fg: #fda29b;
 	--color-sucio-bg: #3a1311;
 	--color-sucio-border: #7a2620;
 	--color-sucio-solid: #f04438;
+	--color-warning-fg: #fec84b;
+	--color-warning-bg: #2d2107;
+	--color-warning-border: #6b4a0b;
+	--color-warning-solid: #f5a524;
 	--shadow-sm: 0 1px 2px rgb(0 0 0 / 40%);
 	--shadow-md: 0 4px 12px rgb(0 0 0 / 45%), 0 1px 3px rgb(0 0 0 / 40%);
 	--shadow-lg: 0 12px 32px rgb(0 0 0 / 55%);
@@ -422,9 +424,9 @@ textarea.input {
 }
 
 .alert.warning {
-	background: var(--color-medio-bg);
-	border-color: var(--color-medio-border);
-	color: var(--color-medio-fg);
+	background: var(--color-warning-bg);
+	border-color: var(--color-warning-border);
+	color: var(--color-warning-fg);
 }
 
 /* Responsive table: stacked rows on mobile, real table from 640px */

@@ -18,12 +18,15 @@
 
 	let estado = $state<EstadoAula | null>(null);
 	let submitting = $state(false);
+	let fotoError = $state<string>();
 
-	const estaSucia = $derived(data.aula.estado_actual === 'sucio');
-	// The label reflects the evidence rule as soon as the page loads: a dirty classroom
-	// needs a photo unless it is reported dirty again.
-	const fotoObligatoria = $derived(estaSucia && estado !== 'sucio');
-	const fotoRequerida = $derived(requiresPhoto(data.aula.estado_actual, estado));
+	// Evidence rule: only a `sucio` report needs a photo, so the field exists only then.
+	const fotoObligatoria = $derived(requiresPhoto(estado));
+
+	$effect(() => {
+		void estado;
+		fotoError = undefined;
+	});
 </script>
 
 <svelte:head>
@@ -47,7 +50,15 @@
 			class="report-form"
 			method="POST"
 			enctype="multipart/form-data"
-			use:enhance={() => {
+			use:enhance={({ formData, formElement, cancel }) => {
+				// The server and the DB enforce the rule too; this check gives a localized message.
+				const foto = formData.get('foto');
+				if (requiresPhoto(estado) && !(foto instanceof File && foto.size > 0)) {
+					cancel();
+					fotoError = m.report_error_evidence_required();
+					formElement.querySelector<HTMLInputElement>('input[name="foto"]')?.focus();
+					return;
+				}
 				submitting = true;
 				return async ({ result, update }) => {
 					await update({ reset: result.type === 'success' });
@@ -69,12 +80,16 @@
 					value={form?.nota ?? ''}></textarea>
 			</label>
 
-			<PhotoPicker
-				name="foto"
-				label={fotoObligatoria ? m.aula_photo_required_label() : m.aula_photo_optional_label()}
-				hint={fotoObligatoria ? m.aula_photo_hint_dirty() : undefined}
-				required={fotoRequerida}
-			/>
+			{#if fotoObligatoria}
+				<PhotoPicker
+					name="foto"
+					label={m.aula_photo_required_label()}
+					hint={m.aula_photo_hint_dirty()}
+					required
+					error={fotoError}
+					onselect={() => (fotoError = undefined)}
+				/>
+			{/if}
 
 			{#if form?.message}
 				<p class="alert error" role="alert">

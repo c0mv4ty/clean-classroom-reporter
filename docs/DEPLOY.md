@@ -10,7 +10,12 @@ en cada push a `main` (y crea un preview por cada otra rama o PR).
 
 - Una cuenta de Cloudflare (el plan gratuito alcanza).
 - Node.js 22+ y `npm install` ya ejecutado.
-- El proyecto de Supabase configurado (migración, seed y primer admin). Ver la sección 1 del `README.md`.
+- El proyecto de Supabase configurado (migraciones, seed y primer admin). Ver la sección 1 del `README.md`.
+- Si la base de producción ya existe, ejecutar en el SQL editor de Supabase (como `postgres`)
+  `supabase/migrations/20261021000000_two_state_photo_rule.sql` **antes** de desplegar la versión de
+  la app que incluye los dos estados (`limpio` y `sucio`). Si se despliega la app primero, app y
+  base no coincidirán en los estados permitidos. La migración elimina el tercer estado y convierte
+  esos reportes y aulas a `limpio`.
 - Tres valores de Supabase (Project Settings → API):
 
 | Variable                    | Tipo               | Cuándo se lee                              |
@@ -61,20 +66,20 @@ Supabase → Authentication → **URL Configuration**:
 
 - [ ] `/login` carga, los estilos e iconos se ven y el cambio de idioma (ES/EN) funciona.
 - [ ] El login con el usuario admin funciona y redirige a la lista de aulas.
-- [ ] Se puede reportar un aula; pasar de sucio a limpio exige una foto.
+- [ ] Se puede reportar un aula: reportarla como `sucio` exige una foto; como `limpio` no la pide.
 - [ ] `/admin/usuarios` permite crear un presidente (usa `SUPABASE_SERVICE_ROLE_KEY`; si falla con
       error de servidor, falta el secret).
 - [ ] Abrir el sitio en ancho de celular (diseño mobile-first, navbar responsive).
 
 ## Solución de problemas
 
-| Síntoma                                                | Causa probable / solución                                                              |
-| ------------------------------------------------------ | -------------------------------------------------------------------------------------- |
-| El build falla en `wrangler types`                     | Revisar la versión de Node (`.node-version` = 22.17.0) y que `npm install` use el lockfile     |
-| La app carga pero fallan todas las llamadas a Supabase | Faltaban las variables `PUBLIC_*` al compilar. Definirlas y lanzar un nuevo despliegue |
-| Error 500 solo al crear usuarios                       | `SUPABASE_SERVICE_ROLE_KEY` no está como secret en ese entorno (Production vs Preview) |
-| El login funciona en local pero no en producción       | Site URL / Redirect URLs de Supabase sin actualizar (sección 3)                        |
-| Cambié una variable y no pasó nada                     | Las variables se aplican en el **siguiente** build. Reintentar el despliegue           |
+| Síntoma                                                | Causa probable / solución                                                                  |
+| ------------------------------------------------------ | ------------------------------------------------------------------------------------------ |
+| El build falla en `wrangler types`                     | Revisar la versión de Node (`.node-version` = 22.17.0) y que `npm install` use el lockfile |
+| La app carga pero fallan todas las llamadas a Supabase | Faltaban las variables `PUBLIC_*` al compilar. Definirlas y lanzar un nuevo despliegue     |
+| Error 500 solo al crear usuarios                       | `SUPABASE_SERVICE_ROLE_KEY` no está como secret en ese entorno (Production vs Preview)     |
+| El login funciona en local pero no en producción       | Site URL / Redirect URLs de Supabase sin actualizar (sección 3)                            |
+| Cambié una variable y no pasó nada                     | Las variables se aplican en el **siguiente** build. Reintentar el despliegue               |
 
 ## Rollback
 

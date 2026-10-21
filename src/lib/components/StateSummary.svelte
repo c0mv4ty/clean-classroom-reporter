@@ -30,7 +30,7 @@
 		margin: 0;
 		padding: 0;
 		display: grid;
-		grid-template-columns: repeat(3, minmax(0, 1fr));
+		grid-template-columns: repeat(2, minmax(0, 1fr));
 		gap: var(--space-2);
 	}
 
@@ -75,12 +75,6 @@
 		background: var(--color-limpio-bg);
 		border-color: var(--color-limpio-border);
 		color: var(--color-limpio-fg);
-	}
-
-	.medio_limpio {
-		background: var(--color-medio-bg);
-		border-color: var(--color-medio-border);
-		color: var(--color-medio-fg);
 	}
 
 	.sucio {

@@ -31,12 +31,6 @@
 		color: var(--color-limpio-fg);
 	}
 
-	.medio_limpio {
-		background: var(--color-medio-bg);
-		border-color: var(--color-medio-border);
-		color: var(--color-medio-fg);
-	}
-
 	.sucio {
 		background: var(--color-sucio-bg);
 		border-color: var(--color-sucio-border);

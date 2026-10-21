@@ -81,10 +81,6 @@
 		color: var(--color-limpio-fg);
 	}
 
-	.medio_limpio .icon {
-		color: var(--color-medio-fg);
-	}
-
 	.sucio .icon {
 		color: var(--color-sucio-fg);
 	}
@@ -95,12 +91,6 @@
 		color: var(--color-limpio-fg);
 	}
 
-	.medio_limpio:has(input:checked) {
-		border-color: var(--color-medio-solid);
-		background: var(--color-medio-bg);
-		color: var(--color-medio-fg);
-	}
-
 	.sucio:has(input:checked) {
 		border-color: var(--color-sucio-solid);
 		background: var(--color-sucio-bg);
@@ -109,7 +99,7 @@
 
 	@media (min-width: 640px) {
 		.options {
-			grid-template-columns: repeat(3, minmax(0, 1fr));
+			grid-template-columns: repeat(2, minmax(0, 1fr));
 		}
 
 		.option {
