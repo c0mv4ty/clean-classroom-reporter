@@ -3,6 +3,8 @@
 	import { ICON_SIZE } from '#lib/components/icon-size.ts';
 	import { ChevronLeft, ChevronRight, ExternalLink } from '@lucide/svelte';
 	import PageHeader from '#lib/components/PageHeader.svelte';
+	import PreviousReport from '#lib/components/PreviousReport.svelte';
+	import ReporterSummary from '#lib/components/ReporterSummary.svelte';
 	import { m } from '#lib/paraglide/messages.js';
 	import { formatDateTime } from '#lib/format.ts';
 	import type { PageProps } from './$types';
@@ -47,6 +49,8 @@
 	{/snippet}
 </PageHeader>
 
+<ReporterSummary items={data.resumen} aulaNombre={data.aulaNombre} />
+
 {#if data.reportes.length === 0}
 	<p class="empty muted">{data.aulaId ? m.admin_empty_filtered() : m.admin_empty()}</p>
 {:else}
@@ -57,6 +61,7 @@
 					<th scope="col">{m.admin_col_date()}</th>
 					<th scope="col">{m.admin_col_classroom()}</th>
 					<th scope="col">{m.admin_col_status()}</th>
+					<th scope="col">{m.admin_col_previous()}</th>
 					<th scope="col">{m.admin_col_note()}</th>
 					<th scope="col">{m.admin_col_president()}</th>
 					<th scope="col">{m.admin_col_evidence()}</th>
@@ -69,6 +74,13 @@
 						<td data-label={m.admin_col_classroom()}><strong>{r.aula?.nombre ?? '—'}</strong></td>
 						<td data-label={m.admin_col_status()}><span><EstadoBadge estado={r.estado} /></span></td
 						>
+						{#if r.anterior !== undefined}
+							<td data-label={m.admin_col_previous()}>
+								<PreviousReport previous={r.anterior} />
+							</td>
+						{:else}
+							<td class="na" aria-hidden="true"></td>
+						{/if}
 						<td data-label={m.admin_col_note()}>{r.nota ?? '—'}</td>
 						<td data-label={m.admin_col_president()}>{r.usuario?.nombre ?? '—'}</td>
 						<td data-label={m.admin_col_evidence()}>
@@ -115,6 +127,17 @@
 
 	.nowrap {
 		white-space: nowrap;
+	}
+
+	/* Previous-report cell only applies to dirty reports: hide the empty cell when rows are stacked. */
+	td.na {
+		display: none;
+	}
+
+	@media (min-width: 640px) {
+		td.na {
+			display: table-cell;
+		}
 	}
 
 	.foto {

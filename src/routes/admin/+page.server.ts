@@ -1,6 +1,7 @@
 import { error } from '@sveltejs/kit';
 import { m } from '#lib/paraglide/messages.js';
 import { assertAdmin } from '#lib/server/guards.ts';
+import type { EstadoAula } from '#lib/types/database.ts';
 import type { PageServerLoad } from './$types';
 
 const PAGE_SIZE = 50;
@@ -25,15 +26,36 @@ export const load: PageServerLoad = async ({ locals, url }) => {
 		.range(from, from + PAGE_SIZE - 1);
 	if (aulaId) query = query.eq('aula_id', aulaId);
 
-	const [reportesResult, aulasResult] = await Promise.all([
+	const [reportesResult, aulasResult, resumenResult] = await Promise.all([
 		query,
-		locals.supabase.from('aulas').select('id, nombre').order('id')
+		locals.supabase.from('aulas').select('id, nombre').order('id'),
+		// Admin-only SQL functions (the admin check also runs inside the database).
+		locals.supabase.rpc('admin_resumen_reporte_previo', aulaId ? { p_aula_id: aulaId } : {})
 	]);
 
-	if (reportesResult.error || aulasResult.error) error(500, m.admin_load_error());
+	if (reportesResult.error || aulasResult.error || resumenResult.error) {
+		error(500, m.admin_load_error());
+	}
 
 	const reportes = reportesResult.data;
 	const paths = reportes.map((r) => r.foto_path).filter((p): p is string => !!p);
+
+	// Previous report (same aula) is only relevant for dirty reports.
+	const sucioIds = reportes.filter((r) => r.estado === 'sucio').map((r) => r.id);
+	const previos = new Map<string, { nombre: string; estado: EstadoAula; creado_en: string }>();
+	if (sucioIds.length > 0) {
+		const { data, error: previosError } = await locals.supabase.rpc('admin_reportes_previos', {
+			p_ids: sucioIds
+		});
+		if (previosError) error(500, m.admin_load_error());
+		for (const p of data) {
+			previos.set(p.reporte_id, {
+				nombre: p.anterior_nombre,
+				estado: p.anterior_estado,
+				creado_en: p.anterior_creado_en
+			});
+		}
+	}
 
 	const signedUrls = new Map<string, string>();
 	if (paths.length > 0) {
@@ -53,9 +75,18 @@ export const load: PageServerLoad = async ({ locals, url }) => {
 		page,
 		totalPages: Math.max(1, Math.ceil(total / PAGE_SIZE)),
 		total,
+		aulaNombre: aulaId ? (aulasResult.data.find((a) => a.id === aulaId)?.nombre ?? null) : null,
+		resumen: resumenResult.data.map((r) => ({
+			id: r.anterior_usuario_id,
+			nombre: r.anterior_nombre,
+			veces: r.veces,
+			ultimaVez: r.ultima_vez
+		})),
 		reportes: reportes.map((r) => ({
 			...r,
-			fotoUrl: r.foto_path ? (signedUrls.get(r.foto_path) ?? null) : null
+			fotoUrl: r.foto_path ? (signedUrls.get(r.foto_path) ?? null) : null,
+			// null for a dirty report with no earlier report; undefined for non-dirty rows.
+			anterior: r.estado === 'sucio' ? (previos.get(r.id) ?? null) : undefined
 		}))
 	};
 };

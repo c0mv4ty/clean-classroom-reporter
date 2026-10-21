@@ -112,6 +112,15 @@
 	"admin_next": "Next",
 	"admin_page_of": "Page {page} of {total}",
 	"admin_load_error": "Could not load the history.",
+	"admin_col_previous": "Previous report",
+	"admin_previous_none": "No previous report",
+	"admin_summary_title": "Reports before a dirty classroom",
+	"admin_summary_aula": "Filtered by classroom: {aula}",
+	"admin_summary_note": "A previous report is context, not proof of who left the classroom dirty. It only shows who reported the classroom just before.",
+	"admin_summary_empty": "There are no dirty reports with a previous report yet.",
+	"admin_summary_col_user": "User",
+	"admin_summary_col_times": "Times as previous report",
+	"admin_summary_col_last": "Latest dirty report after",
 	"admin_users_summary": [
 		{
 			"declarations": [

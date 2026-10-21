@@ -68,7 +68,31 @@ export type Database = {
 			};
 		};
 		Views: { [_ in never]: never };
-		Functions: { is_admin: { Args: Record<string, never>; Returns: boolean } };
+		Functions: {
+			is_admin: { Args: Record<string, never>; Returns: boolean };
+			// Admin-only (checked inside the function): previous report of the same aula.
+			admin_reportes_previos: {
+				Args: { p_ids: string[] };
+				Returns: {
+					reporte_id: string;
+					anterior_id: string;
+					anterior_usuario_id: string;
+					anterior_nombre: string;
+					anterior_estado: EstadoAula;
+					anterior_creado_en: string;
+				}[];
+			};
+			// Admin-only: users whose report was the last one before a sucio report.
+			admin_resumen_reporte_previo: {
+				Args: { p_aula_id?: number };
+				Returns: {
+					anterior_usuario_id: string;
+					anterior_nombre: string;
+					veces: number;
+					ultima_vez: string;
+				}[];
+			};
+		};
 		Enums: { rol_usuario: Rol; estado_aula: EstadoAula };
 		CompositeTypes: { [_ in never]: never };
 	};

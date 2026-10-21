@@ -112,6 +112,15 @@
 	"admin_next": "Siguiente",
 	"admin_page_of": "Página {page} de {total}",
 	"admin_load_error": "No se pudo cargar el historial.",
+	"admin_col_previous": "Reporte anterior",
+	"admin_previous_none": "Sin reporte anterior",
+	"admin_summary_title": "Reportes previos a un aula sucia",
+	"admin_summary_aula": "Filtrado por aula: {aula}",
+	"admin_summary_note": "El reporte anterior es un dato de contexto, no prueba de quién dejó el aula sucia. Solo muestra quién reportó el aula justo antes.",
+	"admin_summary_empty": "Aún no hay reportes sucios con un reporte anterior.",
+	"admin_summary_col_user": "Usuario",
+	"admin_summary_col_times": "Veces como reporte anterior",
+	"admin_summary_col_last": "Último reporte sucio posterior",
 	"admin_users_summary": [
 		{
 			"declarations": [

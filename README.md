@@ -8,6 +8,11 @@ required as evidence only when a classroom is reported dirty.
   Postgres with RLS, private Storage bucket `evidencias`).
 - **Roles:** `presidente` (reports any classroom) and `admin` (creates users, sees the full
   history with evidence photos). Public signup is disabled.
+- **Previous report (admin only):** in `/admin`, every dirty report shows the report that came
+  just before it for the same classroom (author, state, time), and a summary ranks the users whose
+  report was the last one before a dirty report. It is context, not proof of who left the room
+  dirty: the system only knows who reported. Presidentes never see other users' names; the data
+  comes from SQL functions that check the caller is an admin inside the database.
 - **Rules enforced in the database:** the evidence rule (photo required iff the report is `sucio`)
   and the `aulas.estado_actual` sync live in a trigger (`supabase/migrations/`); reports are
   append-only.
@@ -19,12 +24,17 @@ required as evidence only when a classroom is reported dirty.
    - `supabase/migrations/20261012000000_init.sql` (schema, triggers, RLS, `evidencias` bucket)
    - `supabase/migrations/20261021000000_two_state_photo_rule.sql` (two states, photo required
      only for `sucio`)
+   - `supabase/migrations/20261022000000_previous_report_admin.sql` (admin-only functions behind
+     the previous-report view in `/admin`)
    - `supabase/seed.sql` (28 classrooms, "Aula 1" .. "Aula 28")
 
    > **Existing production database?** Run `20261021000000_two_state_photo_rule.sql` in the SQL
    > editor (as `postgres`) **before** deploying the app version that ships this change, or the
    > app and the database will disagree about the allowed states. It converts reports and
    > classrooms left in the removed third state to `limpio`.
+   >
+   > Likewise run `20261022000000_previous_report_admin.sql` (as `postgres`) **before** deploying
+   > the admin history that shows previous reports; without it `/admin` fails to load.
 
 3. **Disable public signup:** Authentication → Sign In / Providers → turn off "Allow new users
    to sign up". Users are created only by the admin from `/admin/usuarios`.
