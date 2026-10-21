@@ -1,0 +1,537 @@
+{
+	"schemaVersion": 2,
+	"generatedAt": "2026-10-21T06:05:16.572Z",
+	"title": "Design System: Aulas limpias",
+	"extensions": {
+		"colorMeta": {
+			"brand": {
+				"role": "primary",
+				"displayName": "ESPOCH Seal Red",
+				"canonical": "oklch(50.2% 0.202 27)",
+				"tonalRamp": [
+					"oklch(15.0% 0.091 27)",
+					"oklch(26.4% 0.123 27)",
+					"oklch(37.9% 0.155 27)",
+					"oklch(49.3% 0.186 27)",
+					"oklch(60.7% 0.186 27)",
+					"oklch(72.1% 0.155 27)",
+					"oklch(83.6% 0.123 27)",
+					"oklch(95.0% 0.091 27)"
+				]
+			},
+			"brand-strong": {
+				"role": "primary",
+				"displayName": "Seal Red Strong",
+				"canonical": "oklch(43.4% 0.174 27)",
+				"tonalRamp": [
+					"oklch(15.0% 0.078 27)",
+					"oklch(26.4% 0.106 27)",
+					"oklch(37.9% 0.133 27)",
+					"oklch(49.3% 0.160 27)",
+					"oklch(60.7% 0.160 27)",
+					"oklch(72.1% 0.133 27)",
+					"oklch(83.6% 0.106 27)",
+					"oklch(95.0% 0.078 27)"
+				]
+			},
+			"brand-deep": {
+				"role": "primary",
+				"displayName": "Seal Red Deep",
+				"canonical": "oklch(36.7% 0.146 26)",
+				"tonalRamp": [
+					"oklch(15.0% 0.066 26)",
+					"oklch(26.4% 0.089 26)",
+					"oklch(37.9% 0.112 26)",
+					"oklch(49.3% 0.135 26)",
+					"oklch(60.7% 0.135 26)",
+					"oklch(72.1% 0.112 26)",
+					"oklch(83.6% 0.089 26)",
+					"oklch(95.0% 0.066 26)"
+				]
+			},
+			"brand-tint": {
+				"role": "primary",
+				"displayName": "Seal Tint",
+				"canonical": "oklch(95.1% 0.019 13)",
+				"tonalRamp": [
+					"oklch(15.0% 0.008 13)",
+					"oklch(26.4% 0.011 13)",
+					"oklch(37.9% 0.014 13)",
+					"oklch(49.3% 0.017 13)",
+					"oklch(60.7% 0.017 13)",
+					"oklch(72.1% 0.014 13)",
+					"oklch(83.6% 0.011 13)",
+					"oklch(95.0% 0.008 13)"
+				]
+			},
+			"institutional-bronze": {
+				"role": "secondary",
+				"displayName": "Institutional Bronze",
+				"canonical": "oklch(73.3% 0.057 92)",
+				"tonalRamp": [
+					"oklch(15.0% 0.025 92)",
+					"oklch(26.4% 0.034 92)",
+					"oklch(37.9% 0.043 92)",
+					"oklch(49.3% 0.052 92)",
+					"oklch(60.7% 0.052 92)",
+					"oklch(72.1% 0.043 92)",
+					"oklch(83.6% 0.034 92)",
+					"oklch(95.0% 0.025 92)"
+				]
+			},
+			"ink": {
+				"role": "neutral",
+				"displayName": "Ink",
+				"canonical": "oklch(24.8% 0.000 0)",
+				"tonalRamp": [
+					"oklch(15.0% 0.000 0)",
+					"oklch(26.4% 0.000 0)",
+					"oklch(37.9% 0.000 0)",
+					"oklch(49.3% 0.000 0)",
+					"oklch(60.7% 0.000 0)",
+					"oklch(72.1% 0.000 0)",
+					"oklch(83.6% 0.000 0)",
+					"oklch(95.0% 0.000 0)"
+				]
+			},
+			"ink-heading": {
+				"role": "neutral",
+				"displayName": "Ink Heading",
+				"canonical": "oklch(28.1% 0.000 0)",
+				"tonalRamp": [
+					"oklch(15.0% 0.000 0)",
+					"oklch(26.4% 0.000 0)",
+					"oklch(37.9% 0.000 0)",
+					"oklch(49.3% 0.000 0)",
+					"oklch(60.7% 0.000 0)",
+					"oklch(72.1% 0.000 0)",
+					"oklch(83.6% 0.000 0)",
+					"oklch(95.0% 0.000 0)"
+				]
+			},
+			"ink-muted": {
+				"role": "neutral",
+				"displayName": "Ink Muted",
+				"canonical": "oklch(50.0% 0.019 254)",
+				"tonalRamp": [
+					"oklch(15.0% 0.008 254)",
+					"oklch(26.4% 0.011 254)",
+					"oklch(37.9% 0.014 254)",
+					"oklch(49.3% 0.017 254)",
+					"oklch(60.7% 0.017 254)",
+					"oklch(72.1% 0.014 254)",
+					"oklch(83.6% 0.011 254)",
+					"oklch(95.0% 0.008 254)"
+				]
+			},
+			"ink-subtle": {
+				"role": "neutral",
+				"displayName": "Ink Subtle",
+				"canonical": "oklch(54.8% 0.020 253)",
+				"tonalRamp": [
+					"oklch(15.0% 0.009 253)",
+					"oklch(26.4% 0.012 253)",
+					"oklch(37.9% 0.016 253)",
+					"oklch(49.3% 0.019 253)",
+					"oklch(60.7% 0.019 253)",
+					"oklch(72.1% 0.016 253)",
+					"oklch(83.6% 0.012 253)",
+					"oklch(95.0% 0.009 253)"
+				]
+			},
+			"hairline": {
+				"role": "neutral",
+				"displayName": "Hairline",
+				"canonical": "oklch(91.6% 0.000 0)",
+				"tonalRamp": [
+					"oklch(15.0% 0.000 0)",
+					"oklch(26.4% 0.000 0)",
+					"oklch(37.9% 0.000 0)",
+					"oklch(49.3% 0.000 0)",
+					"oklch(60.7% 0.000 0)",
+					"oklch(72.1% 0.000 0)",
+					"oklch(83.6% 0.000 0)",
+					"oklch(95.0% 0.000 0)"
+				]
+			},
+			"hairline-strong": {
+				"role": "neutral",
+				"displayName": "Hairline Strong",
+				"canonical": "oklch(84.4% 0.008 261)",
+				"tonalRamp": [
+					"oklch(15.0% 0.003 0)",
+					"oklch(26.4% 0.005 261)",
+					"oklch(37.9% 0.006 261)",
+					"oklch(49.3% 0.007 261)",
+					"oklch(60.7% 0.007 261)",
+					"oklch(72.1% 0.006 261)",
+					"oklch(83.6% 0.005 261)",
+					"oklch(95.0% 0.003 0)"
+				]
+			},
+			"surface": {
+				"role": "neutral",
+				"displayName": "Surface",
+				"canonical": "oklch(100.0% 0.000 0)",
+				"tonalRamp": [
+					"oklch(15.0% 0.000 0)",
+					"oklch(26.4% 0.000 0)",
+					"oklch(37.9% 0.000 0)",
+					"oklch(49.3% 0.000 0)",
+					"oklch(60.7% 0.000 0)",
+					"oklch(72.1% 0.000 0)",
+					"oklch(83.6% 0.000 0)",
+					"oklch(95.0% 0.000 0)"
+				]
+			},
+			"surface-alt": {
+				"role": "neutral",
+				"displayName": "Surface Alt",
+				"canonical": "oklch(96.7% 0.000 0)",
+				"tonalRamp": [
+					"oklch(15.0% 0.000 0)",
+					"oklch(26.4% 0.000 0)",
+					"oklch(37.9% 0.000 0)",
+					"oklch(49.3% 0.000 0)",
+					"oklch(60.7% 0.000 0)",
+					"oklch(72.1% 0.000 0)",
+					"oklch(83.6% 0.000 0)",
+					"oklch(95.0% 0.000 0)"
+				]
+			},
+			"page": {
+				"role": "neutral",
+				"displayName": "Page",
+				"canonical": "oklch(97.6% 0.000 0)",
+				"tonalRamp": [
+					"oklch(15.0% 0.000 0)",
+					"oklch(26.4% 0.000 0)",
+					"oklch(37.9% 0.000 0)",
+					"oklch(49.3% 0.000 0)",
+					"oklch(60.7% 0.000 0)",
+					"oklch(72.1% 0.000 0)",
+					"oklch(83.6% 0.000 0)",
+					"oklch(95.0% 0.000 0)"
+				]
+			},
+			"limpio-fg": {
+				"role": "tertiary",
+				"displayName": "Limpio Foreground",
+				"canonical": "oklch(42.3% 0.095 159)",
+				"tonalRamp": [
+					"oklch(15.0% 0.043 159)",
+					"oklch(26.4% 0.057 159)",
+					"oklch(37.9% 0.072 159)",
+					"oklch(49.3% 0.087 159)",
+					"oklch(60.7% 0.087 159)",
+					"oklch(72.1% 0.072 159)",
+					"oklch(83.6% 0.057 159)",
+					"oklch(95.0% 0.043 159)"
+				]
+			},
+			"limpio-bg": {
+				"role": "tertiary",
+				"displayName": "Limpio Wash",
+				"canonical": "oklch(97.9% 0.022 160)",
+				"tonalRamp": [
+					"oklch(15.0% 0.010 160)",
+					"oklch(26.4% 0.013 160)",
+					"oklch(37.9% 0.017 160)",
+					"oklch(49.3% 0.020 160)",
+					"oklch(60.7% 0.020 160)",
+					"oklch(72.1% 0.017 160)",
+					"oklch(83.6% 0.013 160)",
+					"oklch(95.0% 0.010 160)"
+				]
+			},
+			"limpio-solid": {
+				"role": "tertiary",
+				"displayName": "Limpio Solid",
+				"canonical": "oklch(67.3% 0.160 156)",
+				"tonalRamp": [
+					"oklch(15.0% 0.072 156)",
+					"oklch(26.4% 0.097 156)",
+					"oklch(37.9% 0.122 156)",
+					"oklch(49.3% 0.147 156)",
+					"oklch(60.7% 0.147 156)",
+					"oklch(72.1% 0.122 156)",
+					"oklch(83.6% 0.097 156)",
+					"oklch(95.0% 0.072 156)"
+				]
+			},
+			"warning-fg": {
+				"role": "tertiary",
+				"displayName": "Warning Foreground",
+				"canonical": "oklch(46.2% 0.134 41)",
+				"tonalRamp": [
+					"oklch(15.0% 0.060 41)",
+					"oklch(26.4% 0.081 41)",
+					"oklch(37.9% 0.102 41)",
+					"oklch(49.3% 0.123 41)",
+					"oklch(60.7% 0.123 41)",
+					"oklch(72.1% 0.102 41)",
+					"oklch(83.6% 0.081 41)",
+					"oklch(95.0% 0.060 41)"
+				]
+			},
+			"warning-bg": {
+				"role": "tertiary",
+				"displayName": "Warning Wash",
+				"canonical": "oklch(98.5% 0.020 92)",
+				"tonalRamp": [
+					"oklch(15.0% 0.009 92)",
+					"oklch(26.4% 0.012 92)",
+					"oklch(37.9% 0.016 92)",
+					"oklch(49.3% 0.019 92)",
+					"oklch(60.7% 0.019 92)",
+					"oklch(72.1% 0.016 92)",
+					"oklch(83.6% 0.012 92)",
+					"oklch(95.0% 0.009 92)"
+				]
+			},
+			"warning-solid": {
+				"role": "tertiary",
+				"displayName": "Warning Solid",
+				"canonical": "oklch(74.7% 0.170 62)",
+				"tonalRamp": [
+					"oklch(15.0% 0.077 62)",
+					"oklch(26.4% 0.103 62)",
+					"oklch(37.9% 0.130 62)",
+					"oklch(49.3% 0.157 62)",
+					"oklch(60.7% 0.157 62)",
+					"oklch(72.1% 0.130 62)",
+					"oklch(83.6% 0.103 62)",
+					"oklch(95.0% 0.077 62)"
+				]
+			},
+			"sucio-fg": {
+				"role": "tertiary",
+				"displayName": "Sucio Foreground",
+				"canonical": "oklch(43.2% 0.150 29)",
+				"tonalRamp": [
+					"oklch(15.0% 0.068 29)",
+					"oklch(26.4% 0.091 29)",
+					"oklch(37.9% 0.115 29)",
+					"oklch(49.3% 0.138 29)",
+					"oklch(60.7% 0.138 29)",
+					"oklch(72.1% 0.115 29)",
+					"oklch(83.6% 0.091 29)",
+					"oklch(95.0% 0.068 29)"
+				]
+			},
+			"sucio-bg": {
+				"role": "tertiary",
+				"displayName": "Sucio Wash",
+				"canonical": "oklch(97.2% 0.012 24)",
+				"tonalRamp": [
+					"oklch(15.0% 0.005 24)",
+					"oklch(26.4% 0.007 24)",
+					"oklch(37.9% 0.009 24)",
+					"oklch(49.3% 0.011 24)",
+					"oklch(60.7% 0.011 24)",
+					"oklch(72.1% 0.009 24)",
+					"oklch(83.6% 0.007 24)",
+					"oklch(95.0% 0.005 24)"
+				]
+			},
+			"sucio-solid": {
+				"role": "tertiary",
+				"displayName": "Sucio Solid",
+				"canonical": "oklch(57.6% 0.209 29)",
+				"tonalRamp": [
+					"oklch(15.0% 0.094 29)",
+					"oklch(26.4% 0.127 29)",
+					"oklch(37.9% 0.160 29)",
+					"oklch(49.3% 0.192 29)",
+					"oklch(60.7% 0.192 29)",
+					"oklch(72.1% 0.160 29)",
+					"oklch(83.6% 0.127 29)",
+					"oklch(95.0% 0.094 29)"
+				]
+			}
+		},
+		"typographyMeta": {
+			"headline-lg": {
+				"displayName": "Headline Large",
+				"purpose": "Page titles (h1)."
+			},
+			"headline-md": {
+				"displayName": "Headline Medium",
+				"purpose": "Section titles (h2) and the header wordmark."
+			},
+			"title": {
+				"displayName": "Title",
+				"purpose": "Card titles and classroom names on wide screens (h3)."
+			},
+			"body": {
+				"displayName": "Body",
+				"purpose": "Default text, 65 to 75ch for prose."
+			},
+			"label": {
+				"displayName": "Label",
+				"purpose": "Field labels, buttons, table headers."
+			},
+			"caption": {
+				"displayName": "Caption",
+				"purpose": "Badges and timestamps."
+			}
+		},
+		"shadows": [
+			{
+				"name": "rest",
+				"value": "0 1px 2px rgb(16 24 40 / 6%)",
+				"purpose": "Cards and classroom tiles at rest, barely there."
+			},
+			{
+				"name": "hover",
+				"value": "0 4px 12px rgb(16 24 40 / 8%), 0 1px 3px rgb(16 24 40 / 6%)",
+				"purpose": "Interactive cards on hover, with a 1px lift."
+			},
+			{
+				"name": "overlay",
+				"value": "0 12px 32px rgb(16 24 40 / 14%)",
+				"purpose": "The user menu and the login card."
+			}
+		],
+		"motion": [
+			{
+				"name": "duration-fast",
+				"value": "150ms",
+				"purpose": "Hover, focus and press feedback."
+			},
+			{
+				"name": "duration-base",
+				"value": "200ms",
+				"purpose": "Slightly larger state changes."
+			},
+			{
+				"name": "ease-out",
+				"value": "cubic-bezier(0.22, 1, 0.36, 1)",
+				"purpose": "Default easing for every transition; reduced-motion collapses durations to ~0."
+			}
+		],
+		"breakpoints": [
+			{
+				"name": "sm",
+				"value": "640px"
+			},
+			{
+				"name": "lg",
+				"value": "1024px"
+			}
+		]
+	},
+	"components": [
+		{
+			"name": "Primary Button",
+			"kind": "button",
+			"refersTo": "button-primary",
+			"description": "The single main action of a view: save a report, sign in.",
+			"html": "<button class=\"ds-btn-primary\">Save report</button>",
+			"css": ".ds-btn-primary{font-family:Inter,system-ui,sans-serif;display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:8px 16px;border:1px solid var(--color-brand,#bc0613);border-radius:var(--radius-sm,6px);background:var(--color-brand,#bc0613);color:#fff;font-size:.875rem;font-weight:600;cursor:pointer;transition:background-color 150ms cubic-bezier(.22,1,.36,1),transform 150ms cubic-bezier(.22,1,.36,1)}.ds-btn-primary:hover{background:var(--color-brand-strong,#9a0510);border-color:var(--color-brand-strong,#9a0510)}.ds-btn-primary:active{background:var(--color-brand-deep,#7a040d);transform:translateY(1px)}.ds-btn-primary:focus-visible{outline:2px solid var(--color-focus,#bc0613);outline-offset:2px}"
+		},
+		{
+			"name": "Secondary Button",
+			"kind": "button",
+			"refersTo": "button-secondary",
+			"description": "Default button for supporting actions: cancel, back, add photo.",
+			"html": "<button class=\"ds-btn-secondary\">Cancel</button>",
+			"css": ".ds-btn-secondary{font-family:Inter,system-ui,sans-serif;display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:8px 16px;border:1px solid var(--color-border-strong,#c9ccd1);border-radius:var(--radius-sm,6px);background:var(--color-surface,#fff);color:var(--color-text,#212121);font-size:.875rem;font-weight:600;cursor:pointer;transition:background-color 150ms cubic-bezier(.22,1,.36,1)}.ds-btn-secondary:hover{background:var(--color-surface-alt,#f4f4f4)}.ds-btn-secondary:focus-visible{outline:2px solid var(--color-focus,#bc0613);outline-offset:2px}"
+		},
+		{
+			"name": "Text Input",
+			"kind": "input",
+			"refersTo": "input",
+			"description": "Labelled field with the label above and a hint below.",
+			"html": "<label class=\"ds-field\"><span class=\"ds-label\">Email</span><input class=\"ds-input\" type=\"email\" placeholder=\"name@espoch.edu.ec\"><span class=\"ds-hint\">Use your institutional address.</span></label>",
+			"css": ".ds-field{font-family:Inter,system-ui,sans-serif;display:grid;gap:8px}.ds-label{font-size:.875rem;font-weight:600;color:var(--color-heading,#292929)}.ds-hint{font-size:.875rem;color:var(--color-text-muted,#5c646e)}.ds-input{font:inherit;width:100%;min-height:44px;padding:8px 12px;border:1px solid var(--color-border-strong,#c9ccd1);border-radius:var(--radius-sm,6px);background:var(--color-surface,#fff);color:var(--color-text,#212121);transition:border-color 150ms cubic-bezier(.22,1,.36,1),box-shadow 150ms cubic-bezier(.22,1,.36,1)}.ds-input::placeholder{color:var(--color-text-subtle,#69727d)}.ds-input:focus-visible{outline:none;border-color:var(--color-focus,#bc0613);box-shadow:0 0 0 3px color-mix(in srgb,var(--color-focus,#bc0613) 35%,transparent)}"
+		},
+		{
+			"name": "Cleaning-state Badge",
+			"kind": "chip",
+			"refersTo": "badge-limpio",
+			"description": "Pill with icon and text for a classroom state; always icon plus label, never color alone.",
+			"html": "<span class=\"ds-badge ds-limpio\"><svg width=\"14\" height=\"14\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><circle cx=\"12\" cy=\"12\" r=\"10\"/><path d=\"m9 12 2 2 4-4\"/></svg>Limpio</span> <span class=\"ds-badge ds-sucio\"><svg width=\"14\" height=\"14\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><circle cx=\"12\" cy=\"12\" r=\"10\"/><path d=\"m15 9-6 6\"/><path d=\"m9 9 6 6\"/></svg>Sucio</span>",
+			"css": ".ds-badge{font-family:Inter,system-ui,sans-serif;display:inline-flex;align-items:center;gap:4px;padding:4px 8px;border:1px solid;border-radius:999px;font-size:.75rem;font-weight:600;line-height:1.2;white-space:nowrap}.ds-limpio{background:var(--color-limpio-bg,#ecfdf3);border-color:var(--color-limpio-border,#abefc6);color:var(--color-limpio-fg,#085d3a)}.ds-sucio{background:var(--color-sucio-bg,#fef3f2);border-color:var(--color-sucio-border,#fecdca);color:var(--color-sucio-fg,#912018)}"
+		},
+		{
+			"name": "Classroom Tile",
+			"kind": "card",
+			"refersTo": "aula-card",
+			"description": "Linked tile for one classroom: name, state badge, last update.",
+			"html": "<a class=\"ds-aula\" href=\"#\"><span class=\"ds-top\"><strong class=\"ds-name\">Aula 12</strong><span class=\"ds-go\"><svg width=\"14\" height=\"14\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"m9 18 6-6-6-6\"/></svg></span></span><span class=\"ds-badge ds-sucio\"><svg width=\"14\" height=\"14\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><circle cx=\"12\" cy=\"12\" r=\"10\"/><path d=\"m15 9-6 6\"/><path d=\"m9 9 6 6\"/></svg>Sucio</span><small class=\"ds-updated\">Updated 21 Oct, 08:40</small></a>",
+			"css": ".ds-aula{font-family:Inter,system-ui,sans-serif;display:grid;gap:8px;justify-items:start;align-content:start;min-height:110px;width:220px;padding:12px;background:var(--color-surface,#fff);border:1px solid var(--color-sucio-border,#fecdca);border-radius:var(--radius-md,10px);box-shadow:0 1px 2px rgb(16 24 40/6%);color:inherit;text-decoration:none;transition:border-color 150ms cubic-bezier(.22,1,.36,1),box-shadow 150ms cubic-bezier(.22,1,.36,1),transform 150ms cubic-bezier(.22,1,.36,1)}.ds-aula:hover{border-color:var(--color-border-strong,#c9ccd1);box-shadow:0 4px 12px rgb(16 24 40/8%),0 1px 3px rgb(16 24 40/6%);transform:translateY(-1px)}.ds-aula:focus-visible{outline:2px solid var(--color-focus,#bc0613);outline-offset:2px}.ds-top{display:flex;justify-content:space-between;align-items:flex-start;width:100%}.ds-name{font-family:'Work Sans',system-ui,sans-serif;font-size:1rem;font-weight:700;line-height:1.2;color:var(--color-heading,#292929)}.ds-go{color:var(--color-text-subtle,#69727d)}.ds-aula:hover .ds-go{color:var(--color-link,#bc0613)}.ds-updated{font-size:.75rem;color:var(--color-text-muted,#5c646e)}.ds-badge{display:inline-flex;align-items:center;gap:4px;padding:4px 8px;border:1px solid;border-radius:999px;font-size:.75rem;font-weight:600;line-height:1.2}.ds-sucio{background:var(--color-sucio-bg,#fef3f2);border-color:var(--color-sucio-border,#fecdca);color:var(--color-sucio-fg,#912018)}"
+		},
+		{
+			"name": "App Header",
+			"kind": "nav",
+			"refersTo": "app-header",
+			"description": "Seal-red band with the ESPOCH wordmark and a 3px bronze rule.",
+			"html": "<header class=\"ds-header\"><a class=\"ds-wordmark\" href=\"#\"><span class=\"ds-mark\">ESPOCH</span><span class=\"ds-sub\">Aulas limpias</span></a></header>",
+			"css": ".ds-header{font-family:Inter,system-ui,sans-serif;display:flex;align-items:center;min-height:60px;padding:0 16px;background:var(--color-header,#bc0613);color:#fff;border-bottom:3px solid var(--color-accent,#b5a880)}.ds-wordmark{display:flex;align-items:baseline;gap:8px;color:#fff;text-decoration:none}.ds-mark{font-family:'Work Sans',system-ui,sans-serif;font-weight:700;font-size:1.375rem;letter-spacing:.02em;line-height:1}.ds-sub{padding-left:8px;border-left:1px solid rgb(255 255 255/82%);font-size:.875rem;font-weight:500;color:rgb(255 255 255/82%)}"
+		}
+	],
+	"narrative": {
+		"northStar": "The Official Ledger",
+		"overview": "Aulas limpias is a register, not a dashboard. Each classroom is a line in an institutional ledger: its state is the first thing read, the time of the last entry sits beneath it, and the photo evidence is part of the record rather than an apology for a failed check. The ESPOCH red works as a seal on the header band and the one primary action; everything between is ink on near-white, separated by hairlines instead of shadows or fills.",
+		"keyCharacteristics": [
+			"Restrained color: ink, hairlines and one institutional red, with state colors reserved for state.",
+			"State is never color alone: every cleaning state pairs tint, icon and text.",
+			"Mobile-first with a 44px touch floor, scaling to a stacked-to-table admin history.",
+			"Flat at rest: hairline borders carry structure; shadow is feedback, not decoration.",
+			"Fixed rem type scale and exact motion budget (150 to 200 ms), no choreography."
+		],
+		"rules": [
+			{
+				"name": "The Seal Rule",
+				"body": "Brand red covers the header and the single primary action per view, roughly 10% of any screen at most. If red appears on a card, a heading or a divider, it is wrong.",
+				"section": "colors"
+			},
+			{
+				"name": "The Never Color Alone Rule",
+				"body": "A cleaning state is always tint + icon + text. Removing the color must leave the state fully readable.",
+				"section": "colors"
+			},
+			{
+				"name": "The Subtle Floor Rule",
+				"body": "Ink Subtle (#69727d) is the lightest text the system allows. Never go lighter \"for elegance\"; it already sits at 4.55:1.",
+				"section": "colors"
+			},
+			{
+				"name": "The Fixed Scale Rule",
+				"body": "The scale is rem-based and fixed, a step ratio near 1.2. No clamp() headings.",
+				"section": "typography"
+			},
+			{
+				"name": "The Headings-Only Display Rule",
+				"body": "Work Sans never sets a button, input, badge or table cell.",
+				"section": "typography"
+			},
+			{
+				"name": "The Hairline First Rule",
+				"body": "Reach for a 1px hairline before a shadow. If a surface needs separating from its neighbor and a border does it, no shadow.",
+				"section": "elevation"
+			}
+		],
+		"dos": [
+			"Do let the cleaning state be the first and heaviest thing on every screen: badge, icon and text together.",
+			"Do keep the ESPOCH red to the header band and one primary action per view (The Seal Rule).",
+			"Do use 44px as the minimum touch target and keep every text pair at 4.5:1 or better; Ink Subtle (#69727d) is the floor.",
+			"Do separate surfaces with 1px hairlines first, shadow only as hover or overlay feedback.",
+			"Do keep motion to 150 to 200 ms with cubic-bezier(0.22, 1, 0.36, 1) and honor prefers-reduced-motion.",
+			"Do present the photo-evidence requirement as a natural step in the flow, with a clear label and hint, not as an error state. Ask for the photo only when the report is `sucio`; a `limpio` report stays a single tap.",
+			"Do write labels as verb + object (\"Save report\", \"Create user\") in plain, direct, institutional language."
+		],
+		"donts": [
+			"Don't build a generic SaaS dashboard: no identical cards with big numbers, no gradients, no neon accents.",
+			"Don't drift into an outdated university portal: no dense default-typography tables, no flat colors from another era.",
+			"Don't add playful consumer-app touches: no illustrations, no flashy animation, no casual tone.",
+			"Don't signal a state with color alone; every state needs its icon and text.",
+			"Don't use border-left or border-right wider than 1px as a colored stripe on cards, rows or alerts.",
+			"Don't use gradient text, glassmorphism, or a hero-metric block (big number, small label, gradient accent).",
+			"Don't set Work Sans on buttons, inputs, badges or table cells; it is for headings and classroom names.",
+			"Don't nest cards, or open a modal where an inline or progressive pattern works.",
+			"Don't animate layout properties or add page-load choreography; state change and feedback only."
+		]
+	}
+}
