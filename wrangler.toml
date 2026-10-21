@@ -2,3 +2,7 @@ name = "aulas-limpias"
 compatibility_date = "2026-10-01"
 compatibility_flags = ["nodejs_compat"]
 pages_build_output_dir = ".svelte-kit/cloudflare"
+
+[vars]
+PUBLIC_SUPABASE_URL = "https://yglovaqpnwyljohjxhpg.supabase.co"
+PUBLIC_SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlnbG92YXFwbnd5bGpvaGp4aHBnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTI1NDQ5NTYsImV4cCI6MjEwODEyMDk1Nn0.qkeO7OWGgqc9dVKHvFnLPTwuDdkUajbXPvag2UpIWZw"
