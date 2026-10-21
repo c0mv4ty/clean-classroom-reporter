@@ -8,6 +8,7 @@
 	"nav_classrooms": "Classrooms",
 	"nav_history": "History",
 	"nav_users": "Users",
+	"nav_qr": "QR codes",
 	"nav_open_menu": "Open menu",
 	"nav_logout": "Sign out",
 	"nav_role_admin": "Administration",
@@ -136,5 +137,14 @@
 	"admin_users_error_password_short": "The password must be at least {min} characters long.",
 	"admin_users_error_role": "Invalid role.",
 	"admin_users_error_duplicate": "A user with that email already exists.",
-	"admin_users_error_create": "Could not create the user."
+	"admin_users_error_create": "Could not create the user.",
+	"admin_qr_title": "Classroom QR codes",
+	"admin_qr_description": "Print one label per classroom and stick it on the door. When scanned, the president signs in if needed and goes straight to that classroom's report.",
+	"admin_qr_print": "Print labels",
+	"admin_qr_origin_label": "Link address",
+	"admin_qr_origin_hint": "The codes use the address of the site you opened this page from. To print the final ones, open this page on the published site.",
+	"admin_qr_local_warning": "You are on a local environment: these codes point to this computer and will not work from other phones.",
+	"admin_qr_label_cta": "Scan to report the cleaning state",
+	"admin_qr_aria": "QR code for classroom {name}",
+	"admin_qr_empty": "No classrooms registered yet."
 }

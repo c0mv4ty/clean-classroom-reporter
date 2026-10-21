@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { LayoutGrid, RotateCcwClock, Users } from '@lucide/svelte';
+	import { LayoutGrid, QrCode, RotateCcwClock, Users } from '@lucide/svelte';
 	import { m } from '#lib/paraglide/messages.js';
 	import LanguageSwitch from './LanguageSwitch.svelte';
 	import NavLinks, { type NavLink } from './NavLinks.svelte';
@@ -34,6 +34,12 @@
 						label: m.nav_users(),
 						icon: Users,
 						current: pathname.startsWith('/admin/usuarios')
+					},
+					{
+						href: '/admin/qr',
+						label: m.nav_qr(),
+						icon: QrCode,
+						current: pathname.startsWith('/admin/qr')
 					}
 				]
 			: [])

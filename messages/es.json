@@ -8,6 +8,7 @@
 	"nav_classrooms": "Aulas",
 	"nav_history": "Historial",
 	"nav_users": "Usuarios",
+	"nav_qr": "Códigos QR",
 	"nav_open_menu": "Abrir menú",
 	"nav_logout": "Salir",
 	"nav_role_admin": "Administración",
@@ -136,5 +137,14 @@
 	"admin_users_error_password_short": "La contraseña debe tener al menos {min} caracteres.",
 	"admin_users_error_role": "Rol inválido.",
 	"admin_users_error_duplicate": "Ya existe un usuario con ese correo.",
-	"admin_users_error_create": "No se pudo crear el usuario."
+	"admin_users_error_create": "No se pudo crear el usuario.",
+	"admin_qr_title": "Códigos QR de las aulas",
+	"admin_qr_description": "Imprime una etiqueta por aula y pégala en la puerta. Al escanearla, el presidente inicia sesión si hace falta y llega directo al reporte de esa aula.",
+	"admin_qr_print": "Imprimir etiquetas",
+	"admin_qr_origin_label": "Dirección de los enlaces",
+	"admin_qr_origin_hint": "Los códigos usan la dirección del sitio desde el que abres esta página. Para imprimir los definitivos, abre esta página en el sitio publicado.",
+	"admin_qr_local_warning": "Estás en un entorno local: estos códigos apuntan a esta computadora y no funcionarán desde otros teléfonos.",
+	"admin_qr_label_cta": "Escanea para reportar la limpieza",
+	"admin_qr_aria": "Código QR del aula {name}",
+	"admin_qr_empty": "No hay aulas registradas todavía."
 }
