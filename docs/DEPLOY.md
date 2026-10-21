@@ -16,6 +16,13 @@ en cada push a `main` (y crea un preview por cada otra rama o PR).
   la app que incluye los dos estados (`limpio` y `sucio`). Si se despliega la app primero, app y
   base no coincidirán en los estados permitidos. La migración elimina el tercer estado y convierte
   esos reportes y aulas a `limpio`.
+- **Límite de fotos de 1 MB (orden inverso al anterior).** Las fotos de evidencia no pueden pesar
+  más de 1 MB: el navegador las comprime antes de subirlas y el servidor rechaza lo que supere el
+  límite. Para la base de producción, desplegar **primero** la app que comprime y **después**
+  ejecutar `supabase/migrations/20261023000000_photo_size_limit_1mb.sql` en el SQL editor (como
+  `postgres`), o cambiar el límite en Storage → `evidencias` → Edit bucket → file size limit. Es
+  seguro en ese orden porque la app nueva siempre envía menos de 1 MB. Si se ejecutara la migración
+  primero, una versión anterior de la app, que aún envía fotos de hasta 10 MB, fallaría al subirlas.
 - Tres valores de Supabase (Project Settings → API):
 
 | Variable                    | Tipo               | Cuándo se lee                              |
@@ -67,6 +74,7 @@ Supabase → Authentication → **URL Configuration**:
 - [ ] `/login` carga, los estilos e iconos se ven y el cambio de idioma (ES/EN) funciona.
 - [ ] El login con el usuario admin funciona y redirige a la lista de aulas.
 - [ ] Se puede reportar un aula: reportarla como `sucio` exige una foto; como `limpio` no la pide.
+- [ ] Una foto grande de celular (más de 1 MB) se optimiza sola y el reporte `sucio` se guarda.
 - [ ] `/admin/usuarios` permite crear un presidente (usa `SUPABASE_SERVICE_ROLE_KEY`; si falla con
       error de servidor, falta el secret).
 - [ ] Abrir el sitio en ancho de celular (diseño mobile-first, navbar responsive).

@@ -1,10 +1,10 @@
 import { error, fail } from '@sveltejs/kit';
+import { MAX_PHOTO_BYTES } from '#lib/constants.ts';
 import { isEstado, requiresPhoto } from '#lib/estados.ts';
 import { m } from '#lib/paraglide/messages.js';
 import type { Actions, PageServerLoad } from './$types';
 
 const MAX_NOTE_LENGTH = 500;
-const MAX_PHOTO_BYTES = 10 * 1024 * 1024;
 const RECENT_REPORTS = 10;
 const EVIDENCE_REQUIRED_HINT = 'evidencia_requerida';
 

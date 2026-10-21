@@ -26,6 +26,8 @@ required as evidence only when a classroom is reported dirty.
      only for `sucio`)
    - `supabase/migrations/20261022000000_previous_report_admin.sql` (admin-only functions behind
      the previous-report view in `/admin`)
+   - `supabase/migrations/20261023000000_photo_size_limit_1mb.sql` (evidence photos capped at
+     1 MB on the `evidencias` bucket)
    - `supabase/seed.sql` (28 classrooms, "Aula 1" .. "Aula 28")
 
    > **Existing production database?** Run `20261021000000_two_state_photo_rule.sql` in the SQL
@@ -35,6 +37,12 @@ required as evidence only when a classroom is reported dirty.
    >
    > Likewise run `20261022000000_previous_report_admin.sql` (as `postgres`) **before** deploying
    > the admin history that shows previous reports; without it `/admin` fails to load.
+   >
+   > **Photo cap (1 MB), opposite order:** deploy the app version that compresses photos **first**,
+   > then run `20261023000000_photo_size_limit_1mb.sql` (as `postgres`), or set the limit under
+   > Storage → `evidencias` → Edit bucket → file size limit. The browser shrinks each photo to
+   > under 1 MB before upload, and the report action rejects anything larger. Running the migration
+   > first would make an older app version, which still sends photos of up to 10 MB, fail to upload.
 
 3. **Disable public signup:** Authentication → Sign In / Providers → turn off "Allow new users
    to sign up". Users are created only by the admin from `/admin/usuarios`.

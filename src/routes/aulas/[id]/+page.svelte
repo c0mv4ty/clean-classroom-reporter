@@ -19,6 +19,7 @@
 	let estado = $state<EstadoAula | null>(null);
 	let submitting = $state(false);
 	let fotoError = $state<string>();
+	let fotoBusy = $state(false);
 
 	// Evidence rule: only a `sucio` report needs a photo, so the field exists only then.
 	const fotoObligatoria = $derived(requiresPhoto(estado));
@@ -51,6 +52,11 @@
 			method="POST"
 			enctype="multipart/form-data"
 			use:enhance={({ formData, formElement, cancel }) => {
+				// The photo is still being optimized: wait for the compressed file before submitting.
+				if (fotoBusy) {
+					cancel();
+					return;
+				}
 				// The server and the DB enforce the rule too; this check gives a localized message.
 				const foto = formData.get('foto');
 				if (requiresPhoto(estado) && !(foto instanceof File && foto.size > 0)) {
@@ -87,6 +93,7 @@
 					hint={m.aula_photo_hint_dirty()}
 					required
 					error={fotoError}
+					bind:busy={fotoBusy}
 					onselect={() => (fotoError = undefined)}
 				/>
 			{/if}
@@ -103,8 +110,8 @@
 				</p>
 			{/if}
 
-			<Button type="submit" variant="primary" block disabled={submitting}>
-				{submitting ? m.aula_submitting() : m.aula_submit()}
+			<Button type="submit" variant="primary" block disabled={submitting || fotoBusy}>
+				{fotoBusy ? m.photo_processing() : submitting ? m.aula_submitting() : m.aula_submit()}
 			</Button>
 		</form>
 	</Card>

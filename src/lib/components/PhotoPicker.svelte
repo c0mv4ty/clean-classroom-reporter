@@ -1,5 +1,7 @@
 <script lang="ts">
-	import { Camera, ImageIcon, TriangleAlert } from '@lucide/svelte';
+	import { Camera, ImageIcon, LoaderCircle, TriangleAlert } from '@lucide/svelte';
+	import { MAX_PHOTO_BYTES } from '#lib/constants.ts';
+	import { compressImage, PhotoError } from '#lib/image.ts';
 	import { m } from '#lib/paraglide/messages.js';
 	import { ICON_SIZE } from './icon-size.ts';
 
@@ -10,21 +12,35 @@
 		/** Visual and ARIA emphasis only; validation is done by the parent so the message is localized. */
 		required?: boolean;
 		error?: string;
+		/** True while the photo is being optimized; the parent must not submit until it is false. */
+		busy?: boolean;
 		onselect?: (file: File | null) => void;
 	};
 
-	let { name, label, hint, required = false, error, onselect }: Props = $props();
+	let {
+		name,
+		label,
+		hint,
+		required = false,
+		error,
+		busy = $bindable(false),
+		onselect
+	}: Props = $props();
 
 	const inputId = $props.id();
 	const hintId = `${inputId}-hint`;
 	const errorId = `${inputId}-error`;
-	const describedBy = $derived(
-		[hint ? hintId : null, error ? errorId : null].filter(Boolean).join(' ')
-	);
-
 	let input = $state<HTMLInputElement>();
 	let fileName = $state<string | null>(null);
 	let previewUrl = $state<string | null>(null);
+	let processingError = $state<string>();
+	// Bumped on every selection, clear and unmount so a slow compression never overwrites newer state.
+	let run = 0;
+
+	const shownError = $derived(processingError ?? error);
+	const describedBy = $derived(
+		[hint ? hintId : null, shownError ? errorId : null].filter(Boolean).join(' ')
+	);
 
 	function setPreview(file: File | null) {
 		if (previewUrl) URL.revokeObjectURL(previewUrl);
@@ -32,13 +48,49 @@
 		fileName = file?.name ?? null;
 	}
 
-	function onchange(event: Event & { currentTarget: HTMLInputElement }) {
-		const file = event.currentTarget.files?.[0] ?? null;
-		setPreview(file);
-		onselect?.(file);
+	async function onchange(event: Event & { currentTarget: HTMLInputElement }) {
+		const el = event.currentTarget;
+		const original = el.files?.[0] ?? null;
+		const current = ++run;
+		processingError = undefined;
+
+		if (!original) {
+			busy = false;
+			setPreview(null);
+			onselect?.(null);
+			return;
+		}
+
+		busy = true;
+		try {
+			const file = await compressImage(original, MAX_PHOTO_BYTES);
+			if (current !== run) return;
+			if (file !== original) {
+				// Swap in the optimized file so FormData (and use:enhance) submits it.
+				const transfer = new DataTransfer();
+				transfer.items.add(file);
+				el.files = transfer.files;
+			}
+			setPreview(file);
+			onselect?.(file);
+		} catch (cause) {
+			if (current !== run) return;
+			el.value = '';
+			setPreview(null);
+			processingError =
+				cause instanceof PhotoError && cause.reason === 'too_large'
+					? m.photo_error_too_large({ max: MAX_PHOTO_BYTES / (1024 * 1024) })
+					: m.photo_error_unreadable();
+			onselect?.(null);
+		} finally {
+			if (current === run) busy = false;
+		}
 	}
 
 	function clear() {
+		run++;
+		busy = false;
+		processingError = undefined;
 		if (input) input.value = '';
 		setPreview(null);
 		onselect?.(null);
@@ -48,13 +100,21 @@
 	$effect(() => {
 		const form = input?.form;
 		if (!form) return;
-		const onReset = () => setPreview(null);
+		const onReset = () => {
+			run++;
+			busy = false;
+			processingError = undefined;
+			setPreview(null);
+		};
 		form.addEventListener('reset', onReset);
 		return () => form.removeEventListener('reset', onReset);
 	});
 
 	$effect(() => {
 		return () => {
+			// Unmounted (e.g. the state switched to `limpio`): drop any pending compression.
+			run++;
+			busy = false;
 			if (previewUrl) URL.revokeObjectURL(previewUrl);
 		};
 	});
@@ -74,17 +134,23 @@
 			accept="image/*"
 			capture="environment"
 			aria-required={required || undefined}
-			aria-invalid={error ? true : undefined}
+			aria-invalid={shownError ? true : undefined}
+			aria-busy={busy || undefined}
 			aria-labelledby="{inputId}-label {inputId}-action"
 			aria-describedby={describedBy || undefined}
 			{onchange}
 		/>
-		<label class="btn trigger" for={inputId} id="{inputId}-action">
+		<label class="btn trigger" class:busy for={inputId} id="{inputId}-action">
 			<Camera size={ICON_SIZE.md} aria-hidden="true" />
 			{fileName ? m.photo_change() : m.photo_choose()}
 		</label>
 
-		{#if fileName}
+		{#if busy}
+			<span class="processing" aria-hidden="true">
+				<LoaderCircle class="spin" size={ICON_SIZE.sm} />
+				{m.photo_processing()}
+			</span>
+		{:else if fileName}
 			<div class="selected">
 				{#if previewUrl}
 					<img class="thumb" src={previewUrl} alt={m.photo_preview_alt()} />
@@ -101,10 +167,12 @@
 		{/if}
 	</div>
 
-	{#if error}
+	<span class="visually-hidden" role="status">{busy ? m.photo_processing() : ''}</span>
+
+	{#if shownError}
 		<p class="alert error" id={errorId} role="alert">
 			<TriangleAlert size={ICON_SIZE.sm} aria-hidden="true" />
-			{error}
+			{shownError}
 		</p>
 	{/if}
 </div>
@@ -130,6 +198,11 @@
 
 	.trigger {
 		width: 100%;
+	}
+
+	.trigger.busy {
+		opacity: 0.65;
+		pointer-events: none;
 	}
 
 	.row:has(input:focus-visible) .trigger {
@@ -183,12 +256,24 @@
 		cursor: pointer;
 	}
 
+	.processing,
 	.empty {
 		display: inline-flex;
 		align-items: center;
 		gap: var(--space-2);
 		font-size: var(--text-sm);
 		color: var(--color-text-muted);
+	}
+
+	/* Reduced motion collapses animation-duration globally (app.css), so this stays a static icon. */
+	.processing :global(.spin) {
+		animation: spin 1s linear infinite;
+	}
+
+	@keyframes spin {
+		to {
+			transform: rotate(360deg);
+		}
 	}
 
 	@media (min-width: 640px) {
