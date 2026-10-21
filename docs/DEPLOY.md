@@ -46,7 +46,7 @@ Iniciar sesión en `/login` y comprobar que la app funciona antes de tocar Cloud
    - `PUBLIC_SUPABASE_URL` → texto plano
    - `PUBLIC_SUPABASE_ANON_KEY` → texto plano
    - `SUPABASE_SERVICE_ROLE_KEY` → **Encrypt**
-   - `NODE_VERSION` → `22` (texto plano, fija la versión de Node del build)
+   - `NODE_VERSION` → `22.17.0` (texto plano; SvelteKit 3 exige Node >=22.17 y `22` resuelve a 22.16). El archivo `.node-version` del repo ya fija lo mismo
 5. **Save and Deploy**. El primer build tarda un par de minutos.
 6. Abrir la URL `https://<proyecto>.pages.dev` y continuar con la sección 3.
 
@@ -70,7 +70,7 @@ Supabase → Authentication → **URL Configuration**:
 
 | Síntoma                                                | Causa probable / solución                                                              |
 | ------------------------------------------------------ | -------------------------------------------------------------------------------------- |
-| El build falla en `wrangler types`                     | Revisar la versión de Node (`NODE_VERSION=22`) y que `npm install` use el lockfile     |
+| El build falla en `wrangler types`                     | Revisar la versión de Node (`.node-version` = 22.17.0) y que `npm install` use el lockfile     |
 | La app carga pero fallan todas las llamadas a Supabase | Faltaban las variables `PUBLIC_*` al compilar. Definirlas y lanzar un nuevo despliegue |
 | Error 500 solo al crear usuarios                       | `SUPABASE_SERVICE_ROLE_KEY` no está como secret en ese entorno (Production vs Preview) |
 | El login funciona en local pero no en producción       | Site URL / Redirect URLs de Supabase sin actualizar (sección 3)                        |
